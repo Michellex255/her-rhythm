@@ -4,14 +4,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Her Rhythm — Know Your Cycle. Own Your Life.</title>
-<meta name="description" content="The first wellness app built entirely around your menstrual cycle.">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+<meta name="description" content="The first wellness app built entirely around your menstrual cycle. Training, nutrition, supplements and skincare — all synced to your cycle, every single day.">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
 <style>
-:root {
-  --rose:#C8526A; --rose-d:#9E3F55; --rose-l:#E8849A;
-  --gold:#C9A96E; --dark:#0E0B10; --dark2:#1A1220; --dark3:#1C1520;
-  --line:rgba(255,255,255,0.08); --glass:rgba(255,255,255,0.04);
-  --hi:rgba(255,255,255,0.92); --mid:rgba(255,255,255,0.5); --lo:rgba(255,255,255,0.28);
+:root{
+  --rose:#C8526A;--rose-d:#9E3F55;--rose-l:#E8849A;
+  --gold:#C9A96E;--dark:#0E0B10;--dark2:#1A1220;
+  --line:rgba(255,255,255,0.08);--glass:rgba(255,255,255,0.04);
+  --hi:rgba(255,255,255,0.92);--mid:rgba(255,255,255,0.5);--lo:rgba(255,255,255,0.28);
   --ease:cubic-bezier(0.4,0,0.2,1);
 }
 *{margin:0;padding:0;box-sizing:border-box}
@@ -22,76 +22,71 @@ body{font-family:'DM Sans',sans-serif;background:var(--dark);color:var(--hi);ove
 /* GRAIN */
 body::after{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");pointer-events:none;z-index:999;opacity:0.5}
 
-/* AURORA BG */
+/* AURORA */
 .aurora{position:fixed;inset:0;pointer-events:none;z-index:0}
 .aurora::before{content:'';position:absolute;width:70vw;height:70vw;max-width:700px;max-height:700px;border-radius:50%;background:radial-gradient(circle,rgba(200,82,106,0.07) 0%,transparent 70%);top:-20%;right:-20%}
 .aurora::after{content:'';position:absolute;width:50vw;height:50vw;max-width:500px;max-height:500px;border-radius:50%;background:radial-gradient(circle,rgba(201,169,110,0.04) 0%,transparent 70%);bottom:-10%;left:-10%}
 
 /* NAV */
 nav{position:fixed;top:0;left:0;right:0;z-index:500;padding:22px 40px;display:flex;align-items:center;justify-content:space-between;transition:all 0.5s var(--ease)}
-nav.scrolled{background:rgba(14,11,16,0.9);backdrop-filter:blur(20px);border-bottom:1px solid var(--line)}
+nav.scrolled{background:rgba(14,11,16,0.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--line)}
 .nav-brand{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:300;letter-spacing:2px;color:var(--hi)}
 .nav-brand em{color:var(--rose);font-style:italic}
 .nav-links{display:flex;align-items:center;gap:32px}
-.nav-links a{font-size:11px;letter-spacing:2.5px;text-transform:uppercase;color:var(--lo);text-decoration:none;transition:color 0.3s}
+.nav-links a{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--lo);text-decoration:none;transition:color 0.3s}
 .nav-links a:hover{color:var(--hi)}
 .nav-cta{padding:10px 22px;background:var(--rose);border:none;border-radius:100px;color:#fff;font-size:12px;font-weight:500;letter-spacing:0.5px;cursor:pointer;transition:all 0.4s var(--ease)}
 .nav-cta:hover{background:var(--rose-d)}
 
 /* SHARED */
-.section-wrap{position:relative;z-index:1}
+.z{position:relative;z-index:1}
 .eyebrow{font-size:10px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);text-align:center;margin-bottom:16px}
-.section-hl{font-family:'Cormorant Garamond',serif;font-size:clamp(34px,5vw,58px);font-weight:300;line-height:1.15;text-align:center;margin-bottom:14px}
-.section-hl em{color:var(--rose);font-style:italic}
-.section-lead{font-size:15px;font-weight:300;color:var(--mid);text-align:center;max-width:460px;margin:0 auto 60px;line-height:1.9}
+.hl{font-family:'Cormorant Garamond',serif;font-size:clamp(34px,5vw,58px);font-weight:300;line-height:1.15;text-align:center;margin-bottom:14px}
+.hl em{color:var(--rose);font-style:italic}
+.lead{font-size:15px;font-weight:300;color:var(--mid);text-align:center;max-width:460px;margin:0 auto 60px;line-height:1.9}
 .gold-bar{width:28px;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin:0 auto}
+@keyframes rise{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.reveal{opacity:0;transform:translateY(20px);transition:opacity 0.9s var(--ease),transform 0.9s var(--ease)}
+.reveal.on{opacity:1;transform:translateY(0)}
+.d1{transition-delay:0.1s}.d2{transition-delay:0.2s}.d3{transition-delay:0.3s}
 
 /* HERO */
-.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:130px 40px 100px;position:relative;z-index:1;text-align:center}
-.hero-eyebrow{font-size:10px;letter-spacing:5px;text-transform:uppercase;color:var(--gold);margin-bottom:28px;animation:rise 1s var(--ease) both}
-.hero-hl{font-family:'Cormorant Garamond',serif;font-size:clamp(50px,8vw,92px);font-weight:300;line-height:1.05;letter-spacing:-0.5px;margin-bottom:28px}
-.hero-hl em{color:var(--rose);font-style:italic}
-.hero-hl .l1{display:block;animation:rise 1s 0.1s var(--ease) both}
-.hero-hl .l2{display:block;animation:rise 1s 0.2s var(--ease) both}
-.hero-sub{font-size:16px;font-weight:300;color:var(--mid);line-height:1.9;max-width:480px;margin:0 auto 48px;animation:rise 1s 0.3s var(--ease) both}
-.hero-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;animation:rise 1s 0.4s var(--ease) both}
-.btn-primary{padding:17px 48px;background:var(--rose);border:none;border-radius:100px;color:#fff;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;letter-spacing:0.5px;cursor:pointer;transition:all 0.4s var(--ease);box-shadow:0 4px 24px rgba(200,82,106,0.25)}
-.btn-primary:hover{background:var(--rose-d);box-shadow:0 8px 32px rgba(200,82,106,0.35)}
-.btn-ghost{padding:16px 36px;background:var(--glass);border:1px solid var(--line);border-radius:100px;color:var(--mid);font-family:'DM Sans',sans-serif;font-size:14px;cursor:pointer;transition:all 0.4s var(--ease);backdrop-filter:blur(8px)}
-.btn-ghost:hover{border-color:rgba(255,255,255,0.18);color:var(--hi)}
-.hero-note{font-size:11px;color:var(--lo);margin-top:16px;letter-spacing:0.5px;animation:rise 1s 0.5s var(--ease) both}
-
-/* Orbit rings */
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:130px 40px 100px;text-align:center;position:relative;z-index:1;overflow:hidden}
 .orbits{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;overflow:hidden}
 .orb{position:absolute;border-radius:50%;border:1px solid}
 .orb1{width:500px;height:500px;border-color:rgba(200,82,106,0.05);animation:spin 50s linear infinite}
 .orb2{width:800px;height:800px;border-color:rgba(201,169,110,0.03);animation:spin 80s linear infinite reverse}
 .orb-dot{position:absolute;top:-3px;left:50%;width:6px;height:6px;background:var(--rose);border-radius:50%;transform:translateX(-50%);opacity:0.4}
 @keyframes spin{to{transform:rotate(360deg)}}
-@keyframes rise{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.hero-eyebrow{font-size:10px;letter-spacing:5px;text-transform:uppercase;color:var(--gold);margin-bottom:28px;animation:rise 1s var(--ease) both}
+.hero-hl{font-family:'Cormorant Garamond',serif;font-size:clamp(48px,8vw,90px);font-weight:300;line-height:1.05;margin-bottom:24px}
+.hero-hl em{color:var(--rose);font-style:italic}
+.l1{display:block;animation:rise 1s 0.1s var(--ease) both}
+.l2{display:block;animation:rise 1s 0.2s var(--ease) both}
+.hero-sub{font-size:16px;font-weight:300;color:var(--mid);line-height:1.9;max-width:460px;margin:0 auto 44px;animation:rise 1s 0.3s var(--ease) both}
+.hero-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;animation:rise 1s 0.4s var(--ease) both}
+.btn-primary{padding:17px 48px;background:var(--rose);border:none;border-radius:100px;color:#fff;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;letter-spacing:0.5px;cursor:pointer;transition:all 0.4s var(--ease);box-shadow:0 4px 24px rgba(200,82,106,0.25)}
+.btn-primary:hover{background:var(--rose-d);box-shadow:0 8px 32px rgba(200,82,106,0.35)}
+.btn-ghost{padding:16px 36px;background:var(--glass);border:1px solid var(--line);border-radius:100px;color:var(--mid);font-family:'DM Sans',sans-serif;font-size:14px;cursor:pointer;transition:all 0.4s var(--ease);backdrop-filter:blur(8px)}
+.btn-ghost:hover{border-color:rgba(255,255,255,0.18);color:var(--hi)}
+.hero-note{font-size:11px;color:var(--lo);margin-top:16px;animation:rise 1s 0.5s var(--ease) both}
 
-/* STATS */
-.stats-bar{display:flex;align-items:stretch;border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:rgba(255,255,255,0.01);position:relative;z-index:1}
-.stat{flex:1;text-align:center;padding:36px 20px;border-right:1px solid var(--line)}
-.stat:last-child{border-right:none}
-.stat-n{font-family:'Cormorant Garamond',serif;font-size:40px;font-weight:300;color:var(--hi);line-height:1}
-.stat-n em{color:var(--rose);font-style:normal}
-.stat-l{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--lo);margin-top:8px}
-
-/* PROBLEM */
-.problem{padding:120px 40px;background:var(--dark2);position:relative;z-index:1}
-.p-rows{max-width:640px;margin:0 auto}
-.p-row{display:flex;gap:28px;align-items:flex-start;padding:32px 0;border-bottom:1px solid var(--line)}
-.p-row:first-child{border-top:1px solid var(--line)}
-.p-num{font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:300;color:rgba(200,82,106,0.2);min-width:36px;line-height:1;padding-top:2px}
-.p-text{font-size:15px;color:var(--mid);line-height:1.8;font-weight:300}
-.p-text strong{color:var(--hi);font-weight:400}
+/* FELT SECTION — the emotional hook */
+.felt{padding:100px 40px;position:relative;z-index:1;text-align:center}
+.felt-hl{font-family:'Cormorant Garamond',serif;font-size:clamp(28px,4vw,48px);font-weight:300;font-style:italic;color:var(--hi);line-height:1.4;max-width:640px;margin:0 auto 48px}
+.felt-hl em{color:var(--rose);font-style:normal}
+.felt-items{display:flex;flex-direction:column;gap:0;max-width:520px;margin:0 auto}
+.felt-item{display:flex;align-items:baseline;gap:16px;padding:20px 0;border-bottom:1px solid var(--line);text-align:left}
+.felt-item:first-child{border-top:1px solid var(--line)}
+.felt-dot{width:6px;height:6px;min-width:6px;border-radius:50%;background:var(--rose);opacity:0.6;margin-top:6px}
+.felt-text{font-size:15px;color:var(--mid);line-height:1.8;font-weight:300}
+.felt-text strong{color:var(--hi);font-weight:400}
 
 /* PHASES */
-.phases{padding:120px 40px;position:relative;z-index:1}
-.phases-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:20px;overflow:hidden;max-width:800px;margin:0 auto}
-.ph{background:var(--dark);padding:36px 28px;position:relative;transition:background 0.4s}
-.ph:hover{background:var(--dark2)}
+.phases{padding:100px 40px;background:var(--dark2);position:relative;z-index:1}
+.phases-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:20px;overflow:hidden;max-width:780px;margin:0 auto}
+.ph{background:var(--dark2);padding:32px 26px;position:relative;transition:background 0.4s}
+.ph:hover{background:var(--dark)}
 .ph::before{content:'';position:absolute;top:0;left:0;width:2px;height:100%}
 .ph.p1::before{background:linear-gradient(to bottom,#D81B60,transparent)}
 .ph.p2::before{background:linear-gradient(to bottom,#4A7C6F,transparent)}
@@ -100,57 +95,63 @@ nav.scrolled{background:rgba(14,11,16,0.9);backdrop-filter:blur(20px);border-bot
 .ph-tag{font-size:9px;letter-spacing:3px;text-transform:uppercase;margin-bottom:8px;font-weight:600}
 .ph.p1 .ph-tag{color:#D81B60}.ph.p2 .ph-tag{color:#4A7C6F}.ph.p3 .ph-tag{color:var(--gold)}.ph.p4 .ph-tag{color:#9B6FD2}
 .ph-name{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:400;color:var(--hi);margin-bottom:6px}
-.ph-days{font-size:11px;color:var(--lo);margin-bottom:14px;letter-spacing:1px}
+.ph-days{font-size:11px;color:var(--lo);margin-bottom:12px;letter-spacing:1px}
 .ph-desc{font-size:13px;color:var(--mid);line-height:1.8;font-weight:300}
 
-/* FEATURES */
-.features{padding:120px 40px;background:var(--dark2);position:relative;z-index:1}
-.feat-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:20px;overflow:hidden;max-width:960px;margin:0 auto}
+/* QUOTE */
+.quote-section{padding:100px 40px;position:relative;z-index:1;text-align:center}
+.big-quote{font-family:'Cormorant Garamond',serif;font-size:clamp(22px,3.5vw,38px);font-weight:300;font-style:italic;color:var(--hi);line-height:1.5;max-width:700px;margin:0 auto 20px}
+.big-quote em{color:var(--rose);font-style:normal}
+.quote-author{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold)}
+
+/* FEATURES — just 3, most powerful */
+.features{padding:100px 40px;background:var(--dark2);position:relative;z-index:1}
+.feat-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:20px;overflow:hidden;max-width:900px;margin:0 auto}
 .feat{background:var(--dark2);padding:36px 28px;transition:background 0.4s}
-.feat:hover{background:var(--dark3)}
+.feat:hover{background:var(--dark)}
 .feat-icon{font-size:26px;margin-bottom:16px}
 .feat-title{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:400;color:var(--hi);margin-bottom:10px}
 .feat-desc{font-size:13px;color:var(--mid);line-height:1.8;font-weight:300}
 .feat-dr{display:inline-block;margin-top:12px;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--rose-l);opacity:0.7}
 
-/* EXPERTS */
-.experts{padding:120px 40px;position:relative;z-index:1}
+/* EXPERTS — 2 quotes, large */
+.experts{padding:100px 40px;position:relative;z-index:1}
 .exp-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;max-width:860px;margin:0 auto}
-.exp{border:1px solid var(--line);border-radius:18px;padding:32px;background:var(--glass);backdrop-filter:blur(8px);transition:all 0.4s var(--ease)}
-.exp:hover{border-color:rgba(201,169,110,0.2);background:rgba(201,169,110,0.02)}
+.exp{border:1px solid var(--line);border-radius:18px;padding:36px;background:var(--glass);backdrop-filter:blur(8px);transition:all 0.4s var(--ease)}
+.exp:hover{border-color:rgba(201,169,110,0.2)}
 .exp-name{font-family:'Cormorant Garamond',serif;font-size:19px;font-weight:400;color:var(--hi);margin-bottom:4px}
 .exp-role{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:18px}
-.exp-q{font-family:'Cormorant Garamond',serif;font-size:16px;font-style:italic;font-weight:300;color:var(--mid);line-height:1.7}
+.exp-q{font-family:'Cormorant Garamond',serif;font-size:17px;font-style:italic;font-weight:300;color:var(--mid);line-height:1.7}
 
 /* PRICING */
-.pricing{padding:120px 40px;background:var(--dark2);position:relative;z-index:1}
-.price-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;max-width:880px;margin:0 auto}
+.pricing{padding:100px 40px;background:var(--dark2);position:relative;z-index:1}
+.price-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;max-width:860px;margin:0 auto}
 .pc{border:1px solid var(--line);border-radius:18px;padding:32px 24px;background:var(--glass);position:relative;transition:all 0.4s var(--ease)}
 .pc:hover{border-color:rgba(200,82,106,0.2)}
 .pc.rec{border-color:rgba(200,82,106,0.4);background:rgba(200,82,106,0.04)}
 .pc-badge{position:absolute;top:-1px;right:20px;background:var(--rose);color:#fff;font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:4px 12px;border-radius:0 0 8px 8px}
-.pc-name{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:400;color:var(--hi);margin-bottom:16px}
+.pc-name{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:400;color:var(--hi);margin-bottom:12px}
 .pc-price{font-size:30px;font-weight:300;color:var(--hi);letter-spacing:-0.5px;margin-bottom:4px}
 .pc-price span{font-size:13px;color:var(--lo);font-weight:300;letter-spacing:0}
-.pc-div{height:1px;background:var(--line);margin:20px 0}
+.pc-div{height:1px;background:var(--line);margin:18px 0}
 .pc-feats{list-style:none;font-size:12px;color:var(--mid);line-height:2.2;font-weight:300}
 .pc-feats li::before{content:'— ';color:var(--rose);opacity:0.4}
-.pc-btn{display:block;width:100%;padding:13px;margin-top:24px;border-radius:100px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;cursor:pointer;transition:all 0.4s;text-align:center;text-decoration:none}
+.pc-btn{display:block;width:100%;padding:13px;margin-top:22px;border-radius:100px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;cursor:pointer;transition:all 0.4s;text-align:center;border:none}
 .pc-btn.out{border:1px solid var(--line);background:transparent;color:var(--mid)}
 .pc-btn.out:hover{border-color:rgba(255,255,255,0.18);color:var(--hi)}
-.pc-btn.sol{border:none;background:var(--rose);color:#fff}
+.pc-btn.sol{background:var(--rose);color:#fff}
 .pc-btn.sol:hover{background:var(--rose-d)}
 
 /* WAITLIST */
-.waitlist{padding:160px 40px;position:relative;z-index:1;text-align:center;overflow:hidden}
+.waitlist{padding:140px 40px;position:relative;z-index:1;text-align:center;overflow:hidden}
 .waitlist::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 50%,rgba(200,82,106,0.07) 0%,transparent 70%);pointer-events:none}
-.w-hl{font-family:'Cormorant Garamond',serif;font-size:clamp(38px,6vw,72px);font-weight:300;line-height:1.1;margin-bottom:16px;position:relative;z-index:2}
+.w-hl{font-family:'Cormorant Garamond',serif;font-size:clamp(36px,6vw,68px);font-weight:300;line-height:1.1;margin-bottom:16px;position:relative;z-index:2}
 .w-hl em{color:var(--rose);font-style:italic}
-.w-sub{font-size:15px;font-weight:300;color:var(--mid);max-width:420px;margin:0 auto 44px;line-height:1.9;position:relative;z-index:2}
-.w-form{display:flex;max-width:420px;margin:0 auto 14px;border:1px solid rgba(255,255,255,0.1);border-radius:100px;overflow:hidden;background:rgba(255,255,255,0.03);backdrop-filter:blur(12px);position:relative;z-index:2}
-.w-input{flex:1;background:transparent;border:none;padding:17px 24px;font-family:'DM Sans',sans-serif;font-size:14px;color:var(--hi);outline:none}
+.w-sub{font-size:15px;font-weight:300;color:var(--mid);max-width:400px;margin:0 auto 40px;line-height:1.9;position:relative;z-index:2}
+.w-form{display:flex;max-width:400px;margin:0 auto 12px;border:1px solid rgba(255,255,255,0.1);border-radius:100px;overflow:hidden;background:rgba(255,255,255,0.03);backdrop-filter:blur(12px);position:relative;z-index:2}
+.w-input{flex:1;background:transparent;border:none;padding:16px 22px;font-family:'DM Sans',sans-serif;font-size:14px;color:var(--hi);outline:none;caret-color:var(--rose)}
 .w-input::placeholder{color:var(--lo)}
-.w-btn{padding:12px 24px;background:var(--rose);border:none;border-radius:100px;color:#fff;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;cursor:pointer;transition:all 0.4s;margin:4px;white-space:nowrap}
+.w-btn{padding:11px 22px;background:var(--rose);border:none;border-radius:100px;color:#fff;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;cursor:pointer;transition:all 0.4s;margin:4px;white-space:nowrap}
 .w-btn:hover{background:var(--rose-d)}
 .w-note{font-size:11px;color:var(--lo);position:relative;z-index:2}
 .w-success{display:none;position:relative;z-index:2}
@@ -171,76 +172,36 @@ footer{padding:40px;border-top:1px solid var(--line);display:flex;align-items:ce
 .f-links a:hover{color:var(--hi)}
 .f-copy{font-size:11px;color:var(--lo)}
 
-/* REVEAL */
-.reveal{opacity:0;transform:translateY(20px);transition:opacity 0.9s var(--ease),transform 0.9s var(--ease)}
-.reveal.on{opacity:1;transform:translateY(0)}
-.reveal.d1{transition-delay:0.1s}.reveal.d2{transition-delay:0.2s}.reveal.d3{transition-delay:0.3s}
-
-/* ═══════════════════════════════
-   VOICE ASSISTANT
-═══════════════════════════════ */
-#voiceBtn{
-  position:fixed;bottom:28px;right:28px;
-  width:56px;height:56px;
-  border-radius:50%;
-  background:var(--rose);
-  border:none;
-  cursor:pointer;
-  z-index:800;
-  display:flex;align-items:center;justify-content:center;
-  box-shadow:0 4px 24px rgba(200,82,106,0.4);
-  transition:all 0.4s var(--ease);
-  font-size:22px;
-}
-#voiceBtn:hover{transform:scale(1.08);box-shadow:0 8px 32px rgba(200,82,106,0.5)}
-#voiceBtn.speaking{animation:pulse-btn 1.5s ease-in-out infinite;background:var(--rose-d)}
-@keyframes pulse-btn{0%,100%{box-shadow:0 4px 24px rgba(200,82,106,0.4)}50%{box-shadow:0 4px 40px rgba(200,82,106,0.7),0 0 0 8px rgba(200,82,106,0.1)}}
-
-#voicePanel{
-  position:fixed;bottom:96px;right:28px;
-  width:300px;
-  background:rgba(26,18,32,0.97);
-  border:1px solid var(--line);
-  border-radius:20px;
-  padding:20px;
-  z-index:800;
-  backdrop-filter:blur(20px);
-  display:none;
-  box-shadow:0 8px 40px rgba(0,0,0,0.5);
-}
+/* VOICE ASSISTANT */
+#voiceBtn{position:fixed;bottom:28px;right:28px;width:52px;height:52px;border-radius:50%;background:var(--rose);border:none;cursor:pointer;z-index:800;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 24px rgba(200,82,106,0.4);transition:all 0.4s var(--ease);font-size:20px}
+#voiceBtn:hover{transform:scale(1.08)}
+#voiceBtn.speaking{animation:vpulse 1.5s ease-in-out infinite}
+@keyframes vpulse{0%,100%{box-shadow:0 4px 24px rgba(200,82,106,0.4)}50%{box-shadow:0 4px 40px rgba(200,82,106,0.7),0 0 0 8px rgba(200,82,106,0.1)}}
+#voicePanel{position:fixed;bottom:92px;right:28px;width:290px;background:rgba(26,18,32,0.97);border:1px solid var(--line);border-radius:20px;padding:18px;z-index:800;backdrop-filter:blur(20px);display:none;box-shadow:0 8px 40px rgba(0,0,0,0.5)}
 #voicePanel.open{display:block;animation:rise 0.3s var(--ease) both}
-
-.vp-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
-.vp-title{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:300;color:var(--hi)}
+.vp-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.vp-title{font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:300;color:var(--hi)}
 .vp-title em{color:var(--rose);font-style:italic}
-.vp-close{background:none;border:none;color:var(--lo);font-size:18px;cursor:pointer;line-height:1;transition:color 0.3s}
+.vp-close{background:none;border:none;color:var(--lo);font-size:16px;cursor:pointer;transition:color 0.3s}
 .vp-close:hover{color:var(--hi)}
-
-.vp-status{font-size:11px;color:var(--lo);margin-bottom:16px;letter-spacing:1px;min-height:16px}
-
-.vp-options{display:flex;flex-direction:column;gap:8px}
-.vp-opt{padding:11px 14px;background:var(--glass);border:1px solid var(--line);border-radius:10px;font-size:12px;color:var(--mid);cursor:pointer;transition:all 0.3s;text-align:left;font-family:'DM Sans',sans-serif}
+.vp-status{font-size:10px;color:var(--lo);margin-bottom:12px;letter-spacing:1px;min-height:14px}
+.vp-opts{display:flex;flex-direction:column;gap:6px}
+.vp-opt{padding:10px 12px;background:var(--glass);border:1px solid var(--line);border-radius:8px;font-size:12px;color:var(--mid);cursor:pointer;transition:all 0.3s;text-align:left;font-family:'DM Sans',sans-serif}
 .vp-opt:hover{background:rgba(200,82,106,0.08);border-color:rgba(200,82,106,0.25);color:var(--hi)}
-
-.vp-text{font-size:13px;color:var(--mid);line-height:1.7;margin-top:12px;font-style:italic;min-height:40px;font-family:'Cormorant Garamond',serif;font-size:15px}
-
-.vp-controls{display:flex;gap:8px;margin-top:14px}
-.vp-ctrl{flex:1;padding:9px;background:var(--glass);border:1px solid var(--line);border-radius:8px;font-size:11px;color:var(--mid);cursor:pointer;transition:all 0.3s;font-family:'DM Sans',sans-serif}
+.vp-txt{font-family:'Cormorant Garamond',serif;font-size:14px;font-style:italic;color:var(--mid);line-height:1.7;margin-top:10px;min-height:36px}
+.vp-ctrls{display:flex;gap:6px;margin-top:12px}
+.vp-ctrl{flex:1;padding:8px;background:var(--glass);border:1px solid var(--line);border-radius:7px;font-size:10px;color:var(--mid);cursor:pointer;transition:all 0.3s;font-family:'DM Sans',sans-serif}
 .vp-ctrl:hover{color:var(--hi);border-color:rgba(255,255,255,0.15)}
-.vp-ctrl.active{background:rgba(200,82,106,0.1);border-color:rgba(200,82,106,0.3);color:var(--rose-l)}
+.vp-ctrl.on{background:rgba(200,82,106,0.1);border-color:rgba(200,82,106,0.3);color:var(--rose-l)}
 
-/* MOBILE */
 @media(max-width:768px){
-  nav{padding:18px 20px}
-  .nav-links{display:none}
+  nav{padding:18px 20px}.nav-links{display:none}
   .hero{padding:100px 20px 80px}
-  .problem,.phases,.features,.experts,.pricing,.waitlist{padding:80px 20px}
-  .stats-bar{flex-wrap:wrap}
-  .stat{flex:0 0 50%;border-bottom:1px solid var(--line)}
+  .felt,.phases,.features,.experts,.pricing,.waitlist,.quote-section{padding:72px 20px}
   .phases-grid,.feat-grid,.price-grid,.exp-grid{grid-template-columns:1fr}
-  #voiceBtn{bottom:20px;right:20px;width:50px;height:50px;font-size:19px}
-  #voicePanel{right:20px;width:calc(100vw - 40px);bottom:82px}
-  footer{flex-direction:column;text-align:center;padding:32px 20px}
+  #voiceBtn{bottom:18px;right:18px;width:48px;height:48px;font-size:18px}
+  #voicePanel{right:18px;width:calc(100vw - 36px);bottom:78px}
+  footer{flex-direction:column;text-align:center;padding:28px 20px}
 }
 </style>
 </head>
@@ -248,26 +209,25 @@ footer{padding:40px;border-top:1px solid var(--line);display:flex;align-items:ce
 <div class="aurora"></div>
 
 <!-- VOICE ASSISTANT -->
-<button id="voiceBtn" onclick="toggleVoice()" title="Voice assistant — tap to hear guidance" aria-label="Open voice assistant">🎙️</button>
-<div id="voicePanel" role="dialog" aria-label="Her Rhythm voice assistant">
-  <div class="vp-header">
+<button id="voiceBtn" onclick="toggleVoice()" aria-label="Open voice guide">🎙️</button>
+<div id="voicePanel" role="dialog" aria-label="Her Rhythm voice guide">
+  <div class="vp-head">
     <div class="vp-title">Her <em>Rhythm</em> Guide</div>
-    <button class="vp-close" onclick="toggleVoice()" aria-label="Close">✕</button>
+    <button class="vp-close" onclick="toggleVoice()">✕</button>
   </div>
-  <div class="vp-status" id="vpStatus">Tap an option below</div>
-  <div class="vp-options">
+  <div class="vp-status" id="vpStatus">What would you like to know?</div>
+  <div class="vp-opts">
     <button class="vp-opt" onclick="speak('welcome')">👋 What is Her Rhythm?</button>
     <button class="vp-opt" onclick="speak('how')">🔄 How does it work?</button>
     <button class="vp-opt" onclick="speak('trial')">🎁 Tell me about the free trial</button>
     <button class="vp-opt" onclick="speak('privacy')">🔒 Is my data safe?</button>
-    <button class="vp-opt" onclick="speak('start')">🚀 How do I get started?</button>
     <button class="vp-opt" onclick="speak('daily')">📅 What happens in the app daily?</button>
   </div>
-  <div class="vp-text" id="vpText"></div>
-  <div class="vp-controls">
-    <button class="vp-ctrl" id="vpStop" onclick="stopSpeech()">⏹ Stop</button>
+  <div class="vp-txt" id="vpTxt"></div>
+  <div class="vp-ctrls">
+    <button class="vp-ctrl" onclick="stopSpeech()">⏹ Stop</button>
     <button class="vp-ctrl" id="vpSlow" onclick="toggleSlow()">🐢 Slower</button>
-    <button class="vp-ctrl" id="vpRepeat" onclick="repeatLast()">🔁 Repeat</button>
+    <button class="vp-ctrl" onclick="repeatLast()">🔁 Repeat</button>
   </div>
 </div>
 
@@ -277,14 +237,13 @@ footer{padding:40px;border-top:1px solid var(--line);display:flex;align-items:ce
   <div class="nav-links">
     <a href="#how">How it works</a>
     <a href="#features">Features</a>
-    <a href="#experts">The science</a>
     <a href="#pricing">Pricing</a>
   </div>
-  <button class="nav-cta" onclick="scrollToWaitlist()">Join the waitlist</button>
+  <button class="nav-cta" onclick="window.location.href='onboard.html'">Start free trial</button>
 </nav>
 
 <!-- HERO -->
-<section class="hero section-wrap">
+<section class="hero z">
   <div class="orbits">
     <div class="orb orb1"><div class="orb-dot"></div></div>
     <div class="orb orb2"></div>
@@ -294,155 +253,133 @@ footer{padding:40px;border-top:1px solid var(--line);display:flex;align-items:ce
     <span class="l1">Know your cycle.</span>
     <span class="l2"><em>Own</em> your life.</span>
   </h1>
-  <p class="hero-sub">The first wellness app built entirely around your menstrual cycle. Training, nutrition, supplements and skincare — all adapting to where you are today.</p>
+  <p class="hero-sub">The first wellness app built entirely around your menstrual cycle. Everything adapts to where you are today — training, food, supplements, sleep.</p>
   <div class="hero-btns">
-    <button class="btn-primary" onclick="window.location.href='onboard.html'">Start my free trial</button>
-    <button class="btn-ghost" onclick="document.getElementById('how').scrollIntoView({behavior:'smooth'})">See how it works</button>
+    <button class="btn-primary" onclick="window.location.href='onboard.html'">Start my free 7-day trial</button>
+    <button class="btn-ghost" onclick="document.getElementById('felt').scrollIntoView({behavior:'smooth'})">Learn more</button>
   </div>
-  <p class="hero-note">Free 7 days · No credit card · Cancel anytime</p>
+  <p class="hero-note">No credit card · Cancel anytime · Takes 3 minutes</p>
 </section>
 
-<!-- STATS -->
-<div class="stats-bar section-wrap reveal">
-  <div class="stat"><div class="stat-n"><em>4</em></div><div class="stat-l">World-leading experts</div></div>
-  <div class="stat"><div class="stat-n">4</div><div class="stat-l">Cycle phases tracked</div></div>
-  <div class="stat"><div class="stat-n">7<em>d</em></div><div class="stat-l">Free trial</div></div>
-  <div class="stat"><div class="stat-n"><em>1</em></div><div class="stat-l">App. Your whole life.</div></div>
-</div>
-
-<!-- PROBLEM -->
-<section class="problem section-wrap" id="problem">
-  <div class="eyebrow reveal">The problem</div>
-  <h2 class="section-hl reveal">Every wellness app was built<br>for a <em>man's</em> body.</h2>
-  <p class="section-lead reveal">The science has known for decades that women's bodies change dramatically across their cycle. The apps have not caught up. Until now.</p>
-  <div class="p-rows">
-    <div class="p-row reveal">
-      <div class="p-num">01</div>
-      <div class="p-text"><strong>Training apps</strong> give you the same workout every day. But your strength and recovery change by up to 40% across your cycle.</div>
+<!-- FELT — emotional hook -->
+<section class="felt z" id="felt">
+  <h2 class="felt-hl reveal">
+    "I know something is off.<br>
+    I just don't know <em>why</em> —<br>
+    or what to do about it."
+  </h2>
+  <div class="felt-items">
+    <div class="felt-item reveal">
+      <div class="felt-dot"></div>
+      <div class="felt-text">You train hard on Monday and feel <strong>unstoppable.</strong> You do the same workout on Thursday and can barely finish.</div>
     </div>
-    <div class="p-row reveal d1">
-      <div class="p-num">02</div>
-      <div class="p-text"><strong>Nutrition apps</strong> give you the same calories every day. But your metabolism increases 100–300 kcal in your luteal phase alone.</div>
+    <div class="felt-item reveal d1">
+      <div class="felt-dot"></div>
+      <div class="felt-text">You eat the same food every week but some weeks you feel <strong>bloated, exhausted and emotional</strong> for no obvious reason.</div>
     </div>
-    <div class="p-row reveal d2">
-      <div class="p-num">03</div>
-      <div class="p-text"><strong>Supplement apps</strong> give you a one-size stack. But what your body needs on day 6 is completely different to day 24.</div>
+    <div class="felt-item reveal d2">
+      <div class="felt-dot"></div>
+      <div class="felt-text">You have tried every app. None of them account for the fact that <strong>you are not the same person every day.</strong></div>
+    </div>
+    <div class="felt-item reveal d3">
+      <div class="felt-dot"></div>
+      <div class="felt-text">Her Rhythm does. <strong>Your cycle is the answer</strong> — and this app is built entirely around it.</div>
     </div>
   </div>
 </section>
 
-<!-- HOW -->
-<section class="phases section-wrap" id="how">
+<!-- PHASES -->
+<section class="phases z" id="how">
   <div class="eyebrow reveal">How it works</div>
-  <h2 class="section-hl reveal">Your cycle drives<br><em>everything.</em></h2>
-  <p class="section-lead reveal">Her Rhythm tracks your phase in real time and adapts your entire wellness plan to match exactly where you are today.</p>
+  <h2 class="hl reveal">Your cycle drives<br><em>everything.</em></h2>
+  <p class="lead reveal">Her Rhythm knows what phase you are in today and adapts your entire plan accordingly. Every single day is different — and now your app knows that.</p>
   <div class="phases-grid reveal">
     <div class="ph p1">
       <div class="ph-tag">Phase 1</div>
       <div class="ph-name">Menstrual</div>
       <div class="ph-days">Days 1–5</div>
-      <div class="ph-desc">Lower hormones, lower intensity. Her Rhythm prioritises anti-inflammatory nutrition and gentle movement that actually helps with cramps.</div>
+      <div class="ph-desc">Lower intensity, anti-inflammatory nutrition. Movement that actually helps with cramps rather than fighting through them.</div>
     </div>
     <div class="ph p2">
       <div class="ph-tag">Phase 2</div>
       <div class="ph-name">Follicular</div>
       <div class="ph-days">Days 6–13</div>
-      <div class="ph-desc">Rising estrogen is anabolic — it builds muscle for you. Her Rhythm pushes you to lift heavy, sprint hard and hit personal records.</div>
+      <div class="ph-desc">Your power window. Rising estrogen builds muscle for you. Her Rhythm pushes you to lift heavy and hit personal records right now.</div>
     </div>
     <div class="ph p3">
       <div class="ph-tag">Phase 3</div>
       <div class="ph-name">Ovulation</div>
       <div class="ph-days">Day ~14</div>
-      <div class="ph-desc">Peak strength and energy. Her Rhythm flags injury risk from ligament laxity and helps you maximise this powerful window safely.</div>
+      <div class="ph-desc">Peak strength and confidence. Her Rhythm flags injury risk from ligament laxity and helps you make the most of this window safely.</div>
     </div>
     <div class="ph p4">
       <div class="ph-tag">Phase 4</div>
       <div class="ph-name">Luteal</div>
       <div class="ph-days">Days 15–28</div>
-      <div class="ph-desc">Metabolism rises, energy shifts inward. Her Rhythm tells you to eat more, train smarter and rest without guilt — because science says so.</div>
+      <div class="ph-desc">Metabolism rises, energy shifts inward. Her Rhythm tells you to eat more and train smarter — because the science says so.</div>
     </div>
   </div>
 </section>
 
-<!-- FEATURES -->
-<section class="features section-wrap" id="features">
-  <div class="eyebrow reveal">Everything in one place</div>
-  <h2 class="section-hl reveal">Built for your <em>whole</em> life.</h2>
-  <p class="section-lead reveal">Her Rhythm isn't a period tracker. It is a complete wellness companion that adapts every part of your day to your cycle.</p>
+<!-- QUOTE -->
+<section class="quote-section z">
+  <div class="gold-bar" style="margin-bottom:40px"></div>
+  <p class="big-quote reveal">"Women are not small men. Stop eating and training like one. <em>Your cycle is your superpower</em> — if you know how to use it."</p>
+  <div class="quote-author reveal" style="margin-top:20px">Dr Stacy Sims — Exercise Physiologist</div>
+  <div class="gold-bar" style="margin-top:40px"></div>
+</section>
+
+<!-- FEATURES — 3 most powerful -->
+<section class="features z" id="features">
+  <div class="eyebrow reveal">Built for your whole life</div>
+  <h2 class="hl reveal">Not just a period tracker.<br><em>A complete companion.</em></h2>
+  <p class="lead reveal">Everything adapts to your cycle — not just your workouts.</p>
   <div class="feat-grid reveal">
     <div class="feat">
       <div class="feat-icon">💪</div>
-      <div class="feat-title">Cycle-synced workouts</div>
-      <div class="feat-desc">Weights, sets and sprint intensity shift automatically with your phase. Audio cues so you never need to look at your phone mid-run.</div>
-      <span class="feat-dr">Dr Stacy Sims</span>
+      <div class="feat-title">Cycle-synced training</div>
+      <div class="feat-desc">Weights, sets and sprint intensity shift automatically with your phase. Audio cues guide you so you never need to look at your phone.</div>
+      <span class="feat-dr">Dr Stacy Sims protocol</span>
     </div>
     <div class="feat">
       <div class="feat-icon">🥗</div>
-      <div class="feat-title">Personalised nutrition</div>
-      <div class="feat-desc">Meal plans that change across your cycle. Tell us what is in your fridge — we suggest a cycle-appropriate meal you can make right now.</div>
+      <div class="feat-title">Smart nutrition</div>
+      <div class="feat-desc">Meals and macros that change across your cycle. Tell us what is in your fridge — we suggest what to make right now.</div>
       <span class="feat-dr">Dr Mary Claire Haver</span>
     </div>
     <div class="feat">
-      <div class="feat-icon">💊</div>
-      <div class="feat-title">Smart supplements</div>
-      <div class="feat-desc">Supplement schedule with timing, conflict warnings and age-appropriate guidance. A teenager gets different advice to a perimenopausal woman.</div>
-      <span class="feat-dr">Evidence-based</span>
-    </div>
-    <div class="feat">
-      <div class="feat-icon">✨</div>
-      <div class="feat-title">Skincare + routines</div>
-      <div class="feat-desc">Morning and evening routines, Face HIIT method and DIY recipes — all adapted to how your skin behaves across your cycle.</div>
-      <span class="feat-dr">Hormone-aware</span>
-    </div>
-    <div class="feat">
-      <div class="feat-icon">🌙</div>
-      <div class="feat-title">Smart bedtime planner</div>
-      <div class="feat-desc">Calculates backwards from your sleep goal. Tells you exactly when to start your evening routine based on what you are doing tonight.</div>
-      <span class="feat-dr">Phase-specific</span>
-    </div>
-    <div class="feat">
       <div class="feat-icon">🤖</div>
-      <div class="feat-title">AI wellness assistant</div>
-      <div class="feat-desc">Ask anything. Get cycle-aware expert answers instantly. Complex questions go to a real person for a personalised response.</div>
-      <span class="feat-dr">Coming soon</span>
+      <div class="feat-title">Daily voice guide</div>
+      <div class="feat-desc">Open the app and hear exactly what to do today. No scrolling, no guessing. Her Rhythm tells you — so your brain can rest.</div>
+      <span class="feat-dr">Accessibility first</span>
     </div>
   </div>
 </section>
 
-<!-- EXPERTS -->
-<section class="experts section-wrap" id="experts">
+<!-- EXPERTS — 2 quotes -->
+<section class="experts z">
   <div class="eyebrow reveal">The science</div>
-  <h2 class="section-hl reveal">Built on the research of<br>the world's <em>best.</em></h2>
-  <p class="section-lead reveal">Her Rhythm brings together the published research of four leading women's health experts into one personalised daily experience.</p>
+  <h2 class="hl reveal">Built on research from<br>the world's <em>best.</em></h2>
+  <p class="lead reveal">Her Rhythm brings together four leading women's health experts into one personalised daily experience.</p>
   <div class="exp-grid reveal">
-    <div class="exp">
-      <div class="exp-name">Dr Stacy Sims</div>
-      <div class="exp-role">Exercise Physiologist</div>
-      <div class="exp-q">"Women are not small men. Stop eating and training like one."</div>
-    </div>
     <div class="exp">
       <div class="exp-name">Dr Mary Claire Haver</div>
       <div class="exp-role">OB/GYN · Menopause Specialist</div>
-      <div class="exp-q">"Muscle is the most geroprotective organ we have. Build it before your ovaries retire."</div>
+      <div class="exp-q">"Muscle is the most geroprotective organ we have. Build it before your ovaries retire. Anti-inflammatory nutrition is not optional — it is medicine."</div>
     </div>
     <div class="exp">
       <div class="exp-name">Dr Vonda Wright</div>
       <div class="exp-role">Orthopaedic Surgeon</div>
-      <div class="exp-q">"Seventy percent of hip fractures happen in women. Bone health starts now — not at sixty-five."</div>
-    </div>
-    <div class="exp">
-      <div class="exp-name">Dr Natalie Crawford</div>
-      <div class="exp-role">Reproductive Endocrinologist</div>
-      <div class="exp-q">"Your menstrual cycle is a vital sign. It tells you everything about your cardiovascular, metabolic and hormonal health."</div>
+      <div class="exp-q">"Seventy percent of hip fractures happen in women. Bone health starts now — not at sixty-five. Every muscle you build in your thirties protects you in your seventies."</div>
     </div>
   </div>
 </section>
 
 <!-- PRICING -->
-<section class="pricing section-wrap" id="pricing">
+<section class="pricing z" id="pricing">
   <div class="eyebrow reveal">Simple pricing</div>
-  <h2 class="section-hl reveal">Start free.<br><em>Stay because it works.</em></h2>
-  <p class="section-lead reveal">Every plan includes a 7-day free trial. No credit card required to start.</p>
+  <h2 class="hl reveal">Start free.<br><em>Stay because it works.</em></h2>
+  <p class="lead reveal">7-day free trial on every plan. No credit card needed.</p>
   <div class="price-grid reveal">
     <div class="pc">
       <div class="pc-name">Essential</div>
@@ -490,11 +427,10 @@ footer{padding:40px;border-top:1px solid var(--line);display:flex;align-items:ce
 </section>
 
 <!-- WAITLIST -->
-<section class="waitlist section-wrap" id="waitlist">
+<section class="waitlist z" id="waitlist">
   <div class="eyebrow reveal" style="position:relative;z-index:2">Early access</div>
-  <h2 class="w-hl reveal">Be the first to move<br>with your <em>rhythm.</em></h2>
-  <p class="w-sub reveal">Her Rhythm is launching soon. Join now and get early access, a founding member discount, and the satisfaction of knowing you got here first.</p>
-
+  <h2 class="w-hl reveal">Move with<br>your <em>rhythm.</em></h2>
+  <p class="w-sub reveal">Join the waitlist and be first through the door when Her Rhythm launches fully.</p>
   <div id="wForm">
     <div class="w-form reveal">
       <input class="w-input" id="wEmail" type="email" placeholder="Your email address" aria-label="Email address">
@@ -502,11 +438,10 @@ footer{padding:40px;border-top:1px solid var(--line);display:flex;align-items:ce
     </div>
     <p class="w-note reveal">No spam. Just your early access link when we launch.</p>
   </div>
-
   <div class="w-success" id="wSuccess">
     <div class="ws-icon">🌸</div>
     <div class="ws-title">You are on the list.</div>
-    <p class="ws-sub">We will send your early access link as soon as Her Rhythm opens.<br>In the meantime — tell a woman who needs this.</p>
+    <p class="ws-sub">We will send your early access link as soon as Her Rhythm opens its doors.</p>
     <div class="ws-btns">
       <button class="ws-btn wa" onclick="shareWA()">Share on WhatsApp</button>
       <button class="ws-btn cp" onclick="copyLink()">Copy link</button>
@@ -515,12 +450,11 @@ footer{padding:40px;border-top:1px solid var(--line);display:flex;align-items:ce
 </section>
 
 <!-- FOOTER -->
-<footer class="section-wrap">
+<footer class="z">
   <div class="f-brand">Her <em>Rhythm</em></div>
   <div class="f-links">
     <a href="#how">How it works</a>
     <a href="#features">Features</a>
-    <a href="#experts">The science</a>
     <a href="#pricing">Pricing</a>
     <a href="onboard.html">Get started</a>
     <a href="#">Privacy</a>
@@ -552,49 +486,31 @@ async function joinWaitlist(){
   const btn=document.querySelector('.w-btn');
   btn.textContent='Sending...';
   btn.style.opacity='0.7';
-  try {
-    const res = await fetch('https://formspree.io/f/mnjlzera', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-      body: JSON.stringify({ email, source: 'Her Rhythm Waitlist', date: new Date().toISOString() })
+  try{
+    const res=await fetch('https://formspree.io/f/mnjlzera',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','Accept':'application/json'},
+      body:JSON.stringify({email,source:'Her Rhythm Waitlist',date:new Date().toISOString()})
     });
-    if(res.ok) {
+    if(res.ok){
       document.getElementById('wForm').style.display='none';
       document.getElementById('wSuccess').style.display='block';
       speakAuto('You are on the list! We will email you as soon as Her Rhythm launches. Welcome to the family.');
-    } else {
-      btn.textContent='Try again';
-      btn.style.opacity='1';
-    }
-  } catch(e) {
-    btn.textContent='Try again';
-    btn.style.opacity='1';
-  }
+    } else { btn.textContent='Try again'; btn.style.opacity='1'; }
+  } catch(e){ btn.textContent='Try again'; btn.style.opacity='1'; }
 }
 
-function shareWA(){window.open('https://wa.me/?text=I just joined the Her Rhythm waitlist — the first wellness app built entirely around your cycle. '+window.location.href);}
+function shareWA(){window.open('https://wa.me/?text=I just joined the Her Rhythm waitlist — the first wellness app built around your cycle. '+window.location.href);}
 function copyLink(){navigator.clipboard.writeText(window.location.href).then(()=>{event.target.textContent='Copied!';setTimeout(()=>event.target.textContent='Copy link',2000)});}
 
-// ═══════════════════════════════
 // VOICE ASSISTANT
-// ═══════════════════════════════
-let synth=window.speechSynthesis;
-let lastText='';
-let slowMode=false;
-let voiceOpen=false;
-
+let synth=window.speechSynthesis,lastTxt='',slowMode=false,voiceOpen=false;
 const SCRIPTS={
-  welcome:`Welcome to Her Rhythm. Her Rhythm is the first wellness app designed entirely around your menstrual cycle. Most apps were built for men's bodies. Her Rhythm understands that your energy, strength, nutrition needs and even your skin change dramatically across your cycle — and it adapts everything accordingly. Every single day.`,
-
-  how:`Here is how Her Rhythm works. First, you complete a short personalised questionnaire — it takes about 3 minutes. Based on your answers, Her Rhythm builds a plan that is completely yours. Then, every day, the app knows what phase of your cycle you are in and tells you exactly what to do. Your workout intensity, your meals, your supplements, your skincare routine — everything adjusts automatically. You never have to guess. Her Rhythm tells you.`,
-
-  trial:`The free trial gives you 7 full days to experience Her Rhythm with no restrictions and no credit card required. You fill in the questionnaire, get your personalised profile, and the full app is yours to use for a week. After 7 days you choose a plan that suits you. You can cancel at any time. There is absolutely no obligation.`,
-
-  privacy:`Her Rhythm takes your privacy very seriously. Your health data is encrypted and stored securely in Europe under GDPR — the world's strictest data protection law. Her Rhythm earns money from subscriptions, not from your data. Your information is never sold, never shared with advertisers, and never sent to third parties. You can delete all your data at any time from the settings.`,
-
-  start:`Getting started is simple. Click the Start My Free Trial button at the top of the page. You will be taken to a short questionnaire — just 3 minutes — where Her Rhythm learns about you. Your cycle, your goals, your health, and your lifestyle. At the end you will see your personalised Rhythm Profile and choose your plan. Your 7-day free trial starts immediately with no credit card needed.`,
-
-  daily:`Here is what a typical day in Her Rhythm looks like. When you open the app, it already knows what cycle phase you are in. It tells you what kind of workout to do today — whether to push hard or take it easy. It tells you what to eat and what supplements to take. It gives you your evening routine and tells you when to start winding down for sleep. If you want, it reads all of this out loud so you never have to look at your phone. Her Rhythm is like having a wellness coach who knows your body better than any app ever has.`
+  welcome:`Welcome to Her Rhythm — the first wellness app built entirely around your menstrual cycle. Most apps were built for men's bodies. Her Rhythm understands that your energy, strength, and nutrition needs change dramatically across your cycle — and it adapts everything accordingly, every single day.`,
+  how:`Here is how Her Rhythm works. First you complete a short personalised questionnaire — it takes about 3 minutes. Then every day the app knows what phase of your cycle you are in and tells you exactly what to do. Your workout, your meals, your supplements — everything adjusts automatically. You never have to guess.`,
+  trial:`The free trial gives you 7 full days with no restrictions and no credit card required. You fill in the questionnaire, get your personalised profile, and the full app is yours. After 7 days you choose a plan. You can cancel at any time with absolutely no obligation.`,
+  privacy:`Her Rhythm takes your privacy very seriously. Your health data is encrypted and stored in Europe under GDPR. Her Rhythm earns from subscriptions, not from your data. Your information is never sold and never shared with advertisers. You can delete all your data at any time.`,
+  daily:`Here is what a typical day looks like. When you open the app, it already knows your cycle phase. It tells you what workout to do, what to eat, what supplements to take, and when to start winding down for sleep. If you want, it reads all of this out loud so you never have to look at your phone.`
 };
 
 function toggleVoice(){
@@ -606,51 +522,33 @@ function toggleVoice(){
 function speak(key){
   const text=SCRIPTS[key];
   if(!text)return;
-  lastText=text;
-  document.getElementById('vpText').textContent=text;
+  lastTxt=text;
+  document.getElementById('vpTxt').textContent=text;
   document.getElementById('vpStatus').textContent='Speaking...';
   doSpeak(text);
 }
 
-function speakAuto(text){
-  lastText=text;
-  doSpeak(text);
-}
+function speakAuto(text){lastTxt=text;doSpeak(text);}
 
 function doSpeak(text){
   if(!synth)return;
   synth.cancel();
   const u=new SpeechSynthesisUtterance(text);
-  u.rate=slowMode?0.75:0.95;
-  u.pitch=1.0;
-  u.volume=0.9;
+  u.rate=slowMode?0.75:0.95;u.pitch=1.0;u.volume=0.9;
   const voices=synth.getVoices();
-  const preferred=voices.find(v=>v.name.includes('Samantha')||v.name.includes('Karen')||v.name.includes('Moira')||v.name.includes('Female')||v.lang==='en-GB')||voices.find(v=>v.lang.startsWith('en'));
-  if(preferred)u.voice=preferred;
+  const v=voices.find(v=>v.name.includes('Samantha')||v.name.includes('Karen')||v.name.includes('Moira')||v.lang==='en-GB')||voices.find(v=>v.lang.startsWith('en'));
+  if(v)u.voice=v;
   u.onstart=()=>document.getElementById('voiceBtn').classList.add('speaking');
-  u.onend=()=>{document.getElementById('voiceBtn').classList.remove('speaking');document.getElementById('vpStatus').textContent='Done — tap an option for more';};
+  u.onend=()=>{document.getElementById('voiceBtn').classList.remove('speaking');document.getElementById('vpStatus').textContent='Done — tap for more';};
   u.onerror=()=>document.getElementById('voiceBtn').classList.remove('speaking');
   synth.speak(u);
 }
 
-function stopSpeech(){
-  if(synth)synth.cancel();
-  document.getElementById('voiceBtn').classList.remove('speaking');
-  document.getElementById('vpStatus').textContent='Stopped';
-}
-
-function toggleSlow(){
-  slowMode=!slowMode;
-  document.getElementById('vpSlow').classList.toggle('active',slowMode);
-  document.getElementById('vpSlow').textContent=slowMode?'🐢 Slower ✓':'🐢 Slower';
-  if(lastText&&synth.speaking){stopSpeech();doSpeak(lastText);}
-}
-
-function repeatLast(){if(lastText)doSpeak(lastText);}
-
-// Load voices
+function stopSpeech(){if(synth)synth.cancel();document.getElementById('voiceBtn').classList.remove('speaking');document.getElementById('vpStatus').textContent='Stopped';}
+function toggleSlow(){slowMode=!slowMode;document.getElementById('vpSlow').classList.toggle('on',slowMode);document.getElementById('vpSlow').textContent=slowMode?'🐢 Slower ✓':'🐢 Slower';if(lastTxt&&synth.speaking){stopSpeech();doSpeak(lastTxt);}}
+function repeatLast(){if(lastTxt)doSpeak(lastTxt);}
 if(synth)synth.getVoices();
-window.speechSynthesis&&window.addEventListener('load',()=>window.speechSynthesis.getVoices());
+window.addEventListener('load',()=>window.speechSynthesis&&window.speechSynthesis.getVoices());
 </script>
 </body>
 </html>
