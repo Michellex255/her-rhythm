@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Her Rhythm — Discover Your Rhythm</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --rose:#C8526A; --rose-d:#9E3F55; --gold:#C9A96E;
+  --dark:#0E0B10; --dark2:#1A1220;
+  --line:rgba(255,255,255,0.08); --glass:rgba(255,255,255,0.04);
+  --hi:rgba(255,255,255,0.92); --lo:rgba(255,255,255,0.35);
+  --ease:cubic-bezier(0.4,0,0.2,1);
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;font-family:'DM Sans',sans-serif;background:var(--dark);color:var(--hi);overflow:hidden}
+::-webkit-scrollbar{width:0}
+
+/* SCREENS */
+.screen{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 28px;opacity:0;pointer-events:none;transition:opacity 0.7s var(--ease);overflow-y:auto}
+.screen.on{opacity:1;pointer-events:all}
+.screen::before{content:'';position:fixed;width:60vw;height:60vw;max-width:500px;max-height:500px;border-radius:50%;background:radial-gradient(circle,rgba(200,82,106,0.07) 0%,transparent 70%);top:-15%;right:-15%;pointer-events:none}
+
+/* SHARED */
+.brand{font-family:'Cormorant Garamond',serif;font-size:38px;font-weight:300;letter-spacing:3px;text-align:center;margin-bottom:4px}
+.brand em{color:var(--rose);font-style:italic}
+.eyebrow{font-size:10px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);text-align:center;margin-bottom:16px}
+.tagline{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--lo);text-align:center;margin-bottom:44px}
+.gold-bar{width:28px;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin:0 auto}
+@keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+/* BUTTONS */
+.btn-rose{padding:16px 44px;background:var(--rose);border:none;border-radius:100px;color:#fff;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;letter-spacing:0.5px;cursor:pointer;transition:all 0.4s var(--ease);box-shadow:0 4px 20px rgba(200,82,106,0.2)}
+.btn-rose:hover{background:var(--rose-d);box-shadow:0 8px 24px rgba(200,82,106,0.3)}
+.btn-ghost{padding:15px 24px;background:var(--glass);border:1px solid var(--line);border-radius:100px;color:var(--lo);font-family:'DM Sans',sans-serif;font-size:13px;cursor:pointer;transition:all 0.4s var(--ease);backdrop-filter:blur(8px)}
+.btn-ghost:hover{color:var(--hi);border-color:rgba(255,255,255,0.15)}
+
+/* LANG SCREEN */
+.lang-q{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:300;font-style:italic;color:var(--hi);text-align:center;margin:20px 0 32px;line-height:1.3}
+.lang-btns{display:flex;gap:12px;justify-content:center;max-width:340px;width:100%}
+.lang-btns .btn-rose{flex:2}
+.lang-btns .btn-ghost{flex:1}
+.lang-list{display:none;width:100%;max-width:340px;margin-top:8px;max-height:60vh;overflow-y:auto}
+.lang-row{display:flex;align-items:center;gap:14px;padding:14px 0;border-bottom:1px solid var(--line);cursor:pointer;transition:all 0.3s}
+.lang-row:first-child{border-top:1px solid var(--line)}
+.lang-row:hover .lname,.lang-row.active .lname{color:var(--rose)}
+.lflag{font-size:22px;min-width:28px}
+.lname{font-size:15px;font-weight:400;transition:color 0.3s}
+.lnat{font-size:12px;color:var(--lo);margin-top:1px}
+
+/* CONSENT SCREEN */
+#consentScreen{justify-content:flex-start;padding-top:52px;padding-bottom:120px}
+.consent-box{width:100%;max-width:420px}
+.consent-hl{font-family:'Cormorant Garamond',serif;font-size:40px;font-weight:300;font-style:italic;color:var(--hi);line-height:1.15;text-align:center;margin-bottom:10px}
+.consent-lead{font-size:13px;color:var(--lo);text-align:center;line-height:1.8;margin-bottom:32px;font-weight:300}
+.prow{display:flex;justify-content:space-between;align-items:baseline;padding:18px 0;border-bottom:1px solid var(--line);gap:20px}
+.prow:first-of-type{border-top:1px solid var(--line)}
+.prow-label{font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:400;color:var(--hi);flex:1;line-height:1.4}
+.prow-desc{font-size:11px;color:var(--lo);margin-top:4px;font-weight:300;line-height:1.7}
+.pstatus{font-size:10px;letter-spacing:2px;text-transform:uppercase;white-space:nowrap;font-weight:500}
+.pstatus.yes{color:#6BAF8A}
+.pstatus.never{color:rgba(200,82,106,0.65)}
+.toggles{margin:32px 0 28px}
+.trow{display:flex;align-items:flex-start;gap:16px;padding:16px 0;border-bottom:1px solid var(--line)}
+.trow:first-child{border-top:1px solid var(--line)}
+.tlabel{flex:1;font-size:12px;color:var(--lo);line-height:1.7;font-weight:300;padding-top:2px}
+.tlabel a{color:rgba(200,82,106,0.7);text-decoration:none;border-bottom:1px solid rgba(200,82,106,0.2)}
+.sw{position:relative;width:44px;min-width:44px;height:24px}
+.sw input{opacity:0;width:0;height:0;position:absolute}
+.track{position:absolute;inset:0;border-radius:100px;background:rgba(255,255,255,0.07);border:1px solid var(--line);cursor:pointer;transition:all 0.4s var(--ease)}
+.track::after{content:'';position:absolute;width:16px;height:16px;border-radius:50%;background:rgba(255,255,255,0.25);top:3px;left:3px;transition:all 0.4s var(--ease)}
+.sw input:checked+.track{background:var(--rose);border-color:var(--rose)}
+.sw input:checked+.track::after{transform:translateX(20px);background:#fff;box-shadow:0 2px 8px rgba(200,82,106,0.4)}
+.btn-cta{width:100%;padding:17px;background:var(--rose);border:none;border-radius:100px;color:#fff;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;letter-spacing:0.5px;cursor:pointer;transition:all 0.4s var(--ease);opacity:0.3;pointer-events:none}
+.btn-cta.on{opacity:1;pointer-events:all;box-shadow:0 4px 20px rgba(200,82,106,0.25)}
+.btn-cta.on:hover{background:var(--rose-d)}
+
+/* INTRO SCREEN */
+.intro-brand{font-family:'Cormorant Garamond',serif;font-size:56px;font-weight:300;letter-spacing:4px;text-align:center;line-height:1;margin-bottom:6px;animation:rise 1.2s var(--ease) both}
+.intro-brand em{color:var(--rose);font-style:italic}
+.intro-tag{font-size:10px;letter-spacing:4px;text-transform:uppercase;color:var(--lo);text-align:center;margin-bottom:48px;animation:rise 1.2s 0.2s var(--ease) both}
+.intro-divider{width:28px;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin:0 auto 48px;animation:rise 1.2s 0.3s var(--ease) both}
+.intro-copy{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:300;font-style:italic;color:rgba(255,255,255,0.55);text-align:center;line-height:1.8;max-width:320px;margin-bottom:48px;animation:rise 1.2s 0.4s var(--ease) both}
+.intro-note{font-size:11px;color:var(--lo);text-align:center;margin-top:18px;animation:rise 1.2s 0.65s var(--ease) both}
+#introScreen .btn-rose{animation:rise 1.2s 0.55s var(--ease) both}
+
+/* QUESTION SCREEN */
+#questionScreen{justify-content:space-between;padding:0;overflow:hidden}
+.qprog{position:absolute;top:0;left:0;right:0;height:2px;background:rgba(255,255,255,0.05);z-index:10}
+.qprog-fill{height:100%;background:linear-gradient(90deg,var(--rose-d),var(--rose),var(--gold));transition:width 0.8s var(--ease)}
+.qarea{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:56px 28px 16px;width:100%;max-width:500px;margin:0 auto;overflow-y:auto}
+.qcat{font-size:10px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:18px;text-align:center}
+.qq{font-family:'Cormorant Garamond',serif;font-size:30px;font-weight:400;color:var(--hi);text-align:center;line-height:1.3;margin-bottom:8px}
+.qhint{font-size:13px;color:var(--lo);text-align:center;line-height:1.7;margin-bottom:32px;font-weight:300;max-width:320px}
+.qanswers{width:100%;max-width:440px}
+.chips{display:flex;flex-wrap:wrap;gap:9px;justify-content:center}
+.chip{padding:11px 20px;border:1px solid rgba(255,255,255,0.09);border-radius:100px;font-size:13px;color:var(--lo);background:var(--glass);cursor:pointer;transition:all 0.3s var(--ease);user-select:none;backdrop-filter:blur(8px)}
+.chip:hover{border-color:rgba(200,82,106,0.35);color:var(--hi)}
+.chip.on{border-color:var(--rose);color:var(--hi);background:rgba(200,82,106,0.1)}
+.qcards{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.qcard{border:1px solid rgba(255,255,255,0.07);border-radius:16px;padding:20px 14px;cursor:pointer;transition:all 0.3s var(--ease);background:var(--glass);backdrop-filter:blur(8px);text-align:center}
+.qcard:hover{border-color:rgba(200,82,106,0.25);background:rgba(200,82,106,0.04)}
+.qcard.on{border-color:var(--rose);background:rgba(200,82,106,0.09)}
+.qcard .ci{font-size:26px;margin-bottom:8px}
+.qcard .cl{font-size:13px;font-weight:500;color:var(--hi);margin-bottom:4px}
+.qcard .cs{font-size:11px;color:var(--lo);line-height:1.5}
+.qinput{width:100%;background:transparent;border:none;border-bottom:1px solid rgba(255,255,255,0.13);padding:14px 0;font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:300;color:var(--hi);outline:none;text-align:center;transition:border-color 0.4s;caret-color:var(--rose)}
+.qinput::placeholder{color:rgba(255,255,255,0.12)}
+.qinput:focus{border-color:var(--rose)}
+.qnum{display:flex;align-items:center;justify-content:center;gap:24px}
+.qnbtn{width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:var(--glass);color:var(--lo);font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.3s var(--ease)}
+.qnbtn:hover{border-color:var(--rose);color:var(--rose)}
+.qnval{font-family:'Cormorant Garamond',serif;font-size:52px;font-weight:300;color:var(--hi);min-width:100px;text-align:center;line-height:1}
+.qnunit{font-size:12px;color:var(--lo);text-align:center;margin-top:8px;letter-spacing:1px}
+.qta{width:100%;background:transparent;border:none;border-bottom:1px solid rgba(255,255,255,0.09);padding:12px 0;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:300;color:var(--hi);outline:none;resize:none;min-height:88px;transition:border-color 0.4s;caret-color:var(--rose)}
+.qta::placeholder{color:rgba(255,255,255,0.1);font-style:italic}
+.qta:focus{border-color:rgba(255,255,255,0.18)}
+.qdrtip{margin-top:24px;padding:16px 0;border-top:1px solid var(--line);text-align:center}
+.qdra{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:6px}
+.qdrt{font-family:'Cormorant Garamond',serif;font-size:16px;font-style:italic;color:var(--lo);line-height:1.7;font-weight:300}
+.qalert{margin-top:18px;padding:14px 18px;border-radius:12px;font-size:12px;line-height:1.7;font-weight:300;display:none;text-align:center}
+.qalert.rose{background:rgba(200,82,106,0.08);border:1px solid rgba(200,82,106,0.18);color:rgba(255,195,205,0.9)}
+.qalert.gold{background:rgba(201,169,110,0.07);border:1px solid rgba(201,169,110,0.18);color:rgba(230,210,170,0.9)}
+.qnav{width:100%;padding:16px 28px 32px;display:flex;align-items:center;gap:12px;background:linear-gradient(to top,rgba(14,11,16,0.98) 60%,transparent);position:absolute;bottom:0;left:0;right:0}
+.qback{width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:var(--glass);color:var(--lo);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.3s var(--ease);flex-shrink:0;backdrop-filter:blur(8px)}
+.qback:hover{border-color:rgba(255,255,255,0.2);color:var(--hi)}
+.qnext{flex:1;padding:15px;background:var(--rose);border:none;border-radius:100px;color:#fff;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;letter-spacing:0.5px;cursor:pointer;transition:all 0.4s var(--ease);box-shadow:0 4px 16px rgba(200,82,106,0.18)}
+.qnext:hover{background:var(--rose-d)}
+.qskip{font-size:12px;color:var(--lo);cursor:pointer;white-space:nowrap;transition:color 0.3s;flex-shrink:0}
+.qskip:hover{color:var(--hi)}
+@keyframes qin{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.qarea.anim{animation:qin 0.4s var(--ease) both}
+
+/* RESULTS */
+#resultsScreen{justify-content:flex-start;padding-top:52px;padding-bottom:100px;overflow-y:auto}
+.rbox{width:100%;max-width:440px}
+.rname{font-family:'Cormorant Garamond',serif;font-size:46px;font-weight:300;font-style:italic;color:var(--hi);text-align:center;line-height:1.1;margin:12px 0 6px}
+.rname span{color:var(--rose)}
+.rsub{font-size:11px;color:var(--lo);text-align:center;letter-spacing:2px;text-transform:uppercase;margin-bottom:44px}
+.sec-label{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:16px}
+.pitem{display:flex;justify-content:space-between;align-items:baseline;padding:14px 0;border-bottom:1px solid var(--line);gap:20px}
+.pitem:first-of-type{border-top:1px solid var(--line)}
+.pkey{font-size:12px;color:var(--lo);font-weight:300;white-space:nowrap}
+.pval{font-family:'Cormorant Garamond',serif;font-size:16px;color:var(--hi);text-align:right;line-height:1.3}
+.iitem{padding:20px 0;border-bottom:1px solid var(--line)}
+.iitem:first-of-type{border-top:1px solid var(--line)}
+.ilabel{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--rose);margin-bottom:6px}
+.itext{font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:300;color:var(--hi);line-height:1.6}
+.plan-hl{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:300;font-style:italic;color:var(--hi);text-align:center;margin:32px 0 18px}
+.plancard{border:1px solid var(--line);border-radius:16px;padding:22px;margin-bottom:10px;background:var(--glass);backdrop-filter:blur(8px);position:relative}
+.plancard.rec{border-color:rgba(200,82,106,0.45);background:rgba(200,82,106,0.05)}
+.pbadge{position:absolute;top:-1px;right:18px;background:var(--rose);color:#fff;font-size:9px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;padding:4px 12px;border-radius:0 0 8px 8px}
+.pname{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:400;color:var(--hi);margin-bottom:4px}
+.pprice{font-size:12px;color:var(--gold);letter-spacing:1px;margin-bottom:14px}
+.pfeat{list-style:none;font-size:12px;color:var(--lo);line-height:2;font-weight:300}
+.pfeat li::before{content:'— ';color:var(--rose);opacity:0.5}
+.btn-trial{width:100%;padding:18px;background:var(--rose);border:none;border-radius:100px;color:#fff;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;cursor:pointer;transition:all 0.4s var(--ease);box-shadow:0 4px 20px rgba(200,82,106,0.22);margin:24px 0 10px}
+.btn-trial:hover{background:var(--rose-d)}
+.legal{font-size:11px;color:var(--lo);text-align:center;line-height:1.7;font-weight:300;margin-top:20px;padding-bottom:40px}
+
+/* LANG BTN */
+#langBtn{position:fixed;top:18px;right:18px;background:var(--glass);border:1px solid var(--line);border-radius:100px;padding:7px 14px;font-size:12px;color:var(--lo);cursor:pointer;z-index:1000;display:none;backdrop-filter:blur(8px);transition:all 0.3s}
+#langBtn:hover{color:var(--hi)}
+
+/* ADD YOUR OWN */
+.add-own{margin-top:20px;text-align:center}
+.add-own-btn{background:none;border:none;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--lo);cursor:pointer;padding:8px 0;transition:color 0.3s;font-family:"DM Sans",sans-serif}
+.add-own-btn:hover{color:var(--hi)}
+.add-own-btn::before{content:"+ "}
+.add-own-field{display:none;margin-top:10px;animation:rise 0.35s var(--ease) both}
+.add-own-input{width:100%;background:transparent;border:none;border-bottom:1px solid rgba(255,255,255,0.1);padding:10px 0;font-family:"DM Sans",sans-serif;font-size:13px;font-weight:300;color:var(--hi);outline:none;text-align:center;transition:border-color 0.3s;caret-color:var(--rose)}
+.add-own-input::placeholder{color:rgba(255,255,255,0.15);font-style:italic}
+.add-own-input:focus{border-color:rgba(255,255,255,0.2)}
+
+/* PROFILE PIC */
+.pic-wrap{display:flex;flex-direction:column;align-items:center;margin-bottom:28px}
+.pic-circle{width:100px;height:100px;border-radius:50%;border:1.5px solid var(--line);background:var(--glass);display:flex;align-items:center;justify-content:center;cursor:pointer;overflow:hidden;position:relative;transition:border-color 0.4s;backdrop-filter:blur(8px);margin-bottom:10px}
+.pic-circle:hover{border-color:rgba(200,82,106,0.5)}
+.pic-circle img{width:100%;height:100%;object-fit:cover;display:none}
+.pic-circle .pic-icon{font-size:32px;color:var(--lo);transition:all 0.3s}
+.pic-circle:hover .pic-icon{color:var(--rose)}
+.pic-hint{font-size:11px;color:var(--lo);letter-spacing:1px}
+#picInput{display:none}
+
+@media(max-width:380px){.qq{font-size:24px}.intro-brand{font-size:44px}.qcards{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<!-- LANGUAGE -->
+<div class="screen on" id="langScreen">
+  <div class="brand">Her <em>Rhythm</em></div>
+  <div class="tagline" id="langDetect">Detecting your language...</div>
+  <div id="langConfirm">
+    <div class="lang-q" id="langQ">Is English your preferred language?</div>
+    <div class="lang-btns">
+      <button class="btn-rose" id="langYes" onclick="confirmLang()">Yes, continue</button>
+      <button class="btn-ghost" onclick="showLangList()">Change</button>
+    </div>
+  </div>
+  <div class="lang-list" id="langList">
+    <div class="lang-row active" onclick="pickLang('en','English')"><span class="lflag">🇬🇧</span><div><div class="lname">English</div><div class="lnat">English</div></div></div>
+    <div class="lang-row" onclick="pickLang('nl','Nederlands')"><span class="lflag">🇳🇱</span><div><div class="lname">Dutch</div><div class="lnat">Nederlands</div></div></div>
+    <div class="lang-row" onclick="pickLang('af','Afrikaans')"><span class="lflag">🇿🇦</span><div><div class="lname">Afrikaans</div><div class="lnat">Afrikaans</div></div></div>
+    <div class="lang-row" onclick="pickLang('fr','Français')"><span class="lflag">🇫🇷</span><div><div class="lname">French</div><div class="lnat">Français</div></div></div>
+    <div class="lang-row" onclick="pickLang('de','Deutsch')"><span class="lflag">🇩🇪</span><div><div class="lname">German</div><div class="lnat">Deutsch</div></div></div>
+    <div class="lang-row" onclick="pickLang('es','Español')"><span class="lflag">🇪🇸</span><div><div class="lname">Spanish</div><div class="lnat">Español</div></div></div>
+    <div class="lang-row" onclick="pickLang('pt','Português')"><span class="lflag">🇧🇷</span><div><div class="lname">Portuguese</div><div class="lnat">Português</div></div></div>
+    <div class="lang-row" onclick="pickLang('it','Italiano')"><span class="lflag">🇮🇹</span><div><div class="lname">Italian</div><div class="lnat">Italiano</div></div></div>
+    <div class="lang-row" onclick="pickLang('ar','العربية')"><span class="lflag">🌍</span><div><div class="lname">Arabic</div><div class="lnat">العربية</div></div></div>
+    <div class="lang-row" onclick="pickLang('hi','हिन्दी')"><span class="lflag">🇮🇳</span><div><div class="lname">Hindi</div><div class="lnat">हिन्दी</div></div></div>
+    <div class="lang-row" onclick="pickLang('zh','中文')"><span class="lflag">🇨🇳</span><div><div class="lname">Chinese</div><div class="lnat">中文</div></div></div>
+    <div class="lang-row" onclick="pickLang('sw','Kiswahili')"><span class="lflag">🌍</span><div><div class="lname">Swahili</div><div class="lnat">Kiswahili</div></div></div>
+  </div>
+</div>
+
+<!-- CONSENT -->
+<div class="screen" id="consentScreen">
+  <div class="consent-box">
+    <div class="eyebrow">Privacy</div>
+    <div class="consent-hl">Your privacy<br>is sacred to us.</div>
+    <div class="consent-lead">No small print. No surprises.<br>Here is exactly how we treat your data.</div>
+    <div class="gold-bar" style="margin-bottom:32px"></div>
+    <div class="prow"><div><div class="prow-label">Your data personalises your experience</div><div class="prow-desc">Used only to make Her Rhythm work better for you. Nothing else.</div></div><div class="pstatus yes">Always</div></div>
+    <div class="prow"><div><div class="prow-label">Encrypted &amp; stored in Europe</div><div class="prow-desc">GDPR protected. Full deletion available any time.</div></div><div class="pstatus yes">Always</div></div>
+    <div class="prow"><div><div class="prow-label">Sold or shared with advertisers</div><div class="prow-desc">Her Rhythm earns from subscriptions — not from your data.</div></div><div class="pstatus never">Never</div></div>
+    <div class="prow"><div><div class="prow-label">Advertising or tracking</div><div class="prow-desc">No ads. No analytics that follow you outside this app.</div></div><div class="pstatus never">Never</div></div>
+    <div class="toggles">
+      <div class="trow"><div class="tlabel">I understand Her Rhythm will use my health information as described above.</div><label class="sw"><input type="checkbox" id="t1" onchange="checkT()"><div class="track"></div></label></div>
+      <div class="trow"><div class="tlabel">I agree to the <a href="#" onclick="return false">Privacy Policy</a> and <a href="#" onclick="return false">Terms of Service</a>.</div><label class="sw"><input type="checkbox" id="t2" onchange="checkT()"><div class="track"></div></label></div>
+      <div class="trow"><div class="tlabel">I confirm I am 12 or older, or a parent is completing this on my behalf.</div><label class="sw"><input type="checkbox" id="t3" onchange="checkT()"><div class="track"></div></label></div>
+    </div>
+    <button class="btn-cta" id="ctaBtn" onclick="acceptConsent()">Begin my journey</button>
+  </div>
+</div>
+
+<!-- INTRO -->
+<div class="screen" id="introScreen">
+  <div class="intro-brand">Her <em>Rhythm</em></div>
+  <div class="intro-tag">Personalised by your cycle &middot; Powered by science</div>
+  <div class="intro-divider"></div>
+  <p class="intro-copy">Your cycle is not an inconvenience.<br>It is the rhythm your entire<br>body moves to.</p>
+  <button class="btn-rose" onclick="startQ()">Discover My Rhythm</button>
+  <p class="intro-note">3 minutes &middot; Free 7-day trial &middot; No credit card</p>
+</div>
+
+<!-- QUESTIONS -->
+<div class="screen" id="questionScreen">
+  <div class="qprog"><div class="qprog-fill" id="qpf"></div></div>
+  <div class="qarea" id="qa"></div>
+  <div class="qnav">
+    <button class="qback" id="qb" onclick="prevQ()">&#8592;</button>
+    <button class="qnext" onclick="nextQ()">Continue</button>
+    <span class="qskip" id="qs" onclick="skipQ()">Skip</span>
+  </div>
+</div>
+
+<!-- RESULTS -->
+<div class="screen" id="resultsScreen">
+  <div class="rbox">
+    <div class="eyebrow">Your Rhythm Profile</div>
+    <div id="rPicDisplay" style="display:none;margin-bottom:16px;text-align:center"><img id="rPicImg" style="width:72px;height:72px;border-radius:50%;object-fit:cover;border:1.5px solid rgba(200,82,106,0.4)"></div>
+    <div class="rname">Welcome, <span id="rn">—</span></div>
+    <div class="rsub">Personalised by your cycle &middot; Powered by science</div>
+    <div id="rp"></div>
+    <div class="gold-bar" style="margin:8px auto 32px"></div>
+    <div id="ri"></div>
+    <div id="rpl"></div>
+    <button class="btn-trial" onclick="beginTrial()">Start My Free 7-Day Trial</button>
+    <p style="font-size:11px;color:var(--lo);text-align:center">No credit card required. Cancel anytime.</p>
+    <p class="legal">Her Rhythm provides wellness guidance based on published expert research. It is not a substitute for medical advice. Always consult your healthcare provider before making changes to medications or supplements.</p>
+  </div>
+</div>
+
+<button id="langBtn" onclick="go('langScreen')">&#127758; Language</button>
+
+<script>
+const A={}, MA={};
+let cQ=0, ageN=0, lang='en';
+
+const LQ={en:'Is English your preferred language?',nl:'Is Nederlands uw voorkeurstaal?',af:'Is Afrikaans jou voorkeurstaal?',fr:'Le français est-il votre langue préférée?',de:'Ist Deutsch Ihre bevorzugte Sprache?',es:'Es el español tu idioma preferido?',pt:'O português é o seu idioma preferido?',it:"L'italiano è la tua lingua preferita?",ar:'هل العربية هي لغتك المفضلة؟',hi:'क्या हिन्दी आपकी पसंदीदा भाषा है?',zh:'中文是您的首选语言吗？',sw:'Je, Kiswahili ndiyo lugha yako?'};
+
+function go(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('on'));
+  document.getElementById(id).classList.add('on');
+  window.scrollTo(0,0);
+}
+
+// LANG
+function detectLang(){
+  const bl=(navigator.language||'en').substring(0,2).toLowerCase();
+  lang=Object.keys(LQ).includes(bl)?bl:'en';
+  document.getElementById('langQ').textContent=LQ[lang]||LQ.en;
+  document.getElementById('langDetect').textContent='Detected from your device';
+  document.querySelectorAll('.lang-row').forEach(r=>{
+    const fn=r.getAttribute('onclick')||'';
+    r.classList.toggle('active',fn.includes("'"+lang+"'"));
+  });
+}
+
+function showLangList(){
+  document.getElementById('langConfirm').style.display='none';
+  document.getElementById('langList').style.display='block';
+  document.getElementById('langDetect').textContent='Choose your language';
+}
+
+function pickLang(code,name){
+  lang=code;
+  localStorage.setItem('hrL',code);
+  document.querySelectorAll('.lang-row').forEach(r=>r.classList.remove('active'));
+  event.currentTarget.classList.add('active');
+  setTimeout(()=>confirmLang(),300);
+}
+
+function confirmLang(){
+  localStorage.setItem('hrL',lang);
+  A.lang=lang;
+  go('consentScreen');
+}
+
+// CONSENT
+function checkT(){
+  const ok=['t1','t2','t3'].every(id=>document.getElementById(id).checked);
+  document.getElementById('ctaBtn').classList.toggle('on',ok);
+}
+
+function acceptConsent(){
+  A.consent=true;
+  A.consentDate=new Date().toISOString();
+  document.getElementById('langBtn').style.display='block';
+  go('introScreen');
+}
+
+// QUESTIONS
+const QS=[
+  {id:'name',cat:'About You',q:'What shall we call you?',hint:'Just your first name is perfect.',type:'text',ph:'Your name...',req:true,skip:false,showPic:true},
+  {id:'age',cat:'About You',q:'How old are you?',hint:'Her Rhythm personalises everything to your age — from supplements to training intensity.',type:'num',unit:'years old',min:12,max:65,def:28,skip:false,
+    onV:(v)=>{
+      ageN=parseInt(v);
+      const el=document.getElementById('qal');
+      if(!el)return;
+      if(ageN>=12&&ageN<=17){el.className='qalert gold';el.innerHTML='Welcome! All advice will be age-appropriate for you — no adult supplements, nothing that is not right for your stage of life.';el.style.display='block';}
+      else if(ageN>=35&&ageN<=55){el.className='qalert rose';el.innerHTML='You are in the most important decade for your long-term health. Her Rhythm includes perimenopause guidance from Dr Haver and Dr Wright.';el.style.display='block';}
+      else{el.style.display='none';}
+    }
+  },
+  {id:'loc',cat:'About You',q:'Where are you based?',hint:'Helps personalise measurements and recommendations.',type:'chips',single:true,skip:true,opts:['Netherlands','South Africa','United Kingdom','United States','Australia','Germany','Belgium','France','Other']},
+  {id:'family',cat:'About You',q:'Who are you cooking for?',hint:'Her Rhythm adapts meal suggestions around your whole household.',type:'chips',single:false,skip:true,opts:['Just myself','Myself and a partner','I have kids','Picky eaters at home','My family eats meat but I do not','Everyone eats like me'],tip:{a:'Her Rhythm',t:"If your family eats meat and you don't, we will show you how to cook one meal two ways — no double cooking."}},
+  {id:'reg',cat:'Your Cycle',q:'How regular is your cycle?',hint:'This is the foundation of everything in Her Rhythm.',type:'chips',single:true,skip:false,opts:['Very regular','Mostly regular','Irregular','Very irregular','No period currently']},
+  {id:'clen',cat:'Your Cycle',q:'How long is your cycle?',hint:'Average days from the first day of one period to the next.',type:'num',unit:'days',min:18,max:45,def:28,skip:true},
+  {id:'flow',cat:'Your Cycle',q:'How would you describe your flow?',hint:'',type:'chips',single:true,skip:true,opts:['Light','Moderate','Heavy','Very heavy']},
+  {id:'symp',cat:'Your Cycle',q:'Which symptoms do you experience?',hint:'Select all that apply.',type:'chips',single:false,skip:true,opts:['Cramps','Bloating','Mood swings','Brain fog','Fatigue','Acne','Sleep issues','Anxiety','Joint pain','Hot flashes','None'],tip:{a:'Dr Mary Claire Haver',t:'Perimenopause often shows first as anxiety, brain fog and sleep disruption — before hot flashes ever appear.'}},
+  {id:'cyNotes',cat:'Your Cycle',q:'Anything else about your cycle?',hint:'Patterns you have noticed, things that make it better or worse.',type:'ta',ph:"e.g. My cycle shortens when I'm stressed. Day 1 cramps are bad but ease after...",skip:true},
+  {id:'cond',cat:'Your Health',q:'Any diagnosed health conditions?',hint:'Her Rhythm adapts your entire plan around your health.',type:'chips',single:false,skip:true,opts:['PCOS','Endometriosis','Fibroids','Thyroid condition','Adenomyosis','Perimenopause','Anxiety / depression','Autoimmune','Insulin resistance','None'],tip:{a:'Dr Natalie Crawford',t:'Your menstrual cycle is a vital sign for cardiovascular, metabolic and hormonal health.'}},
+  {id:'meds',cat:'Your Health',q:'Are you on any medications?',hint:'Including hormonal contraceptives. Helps us avoid supplement conflicts.',type:'chips',single:true,skip:true,opts:['No medications','Hormonal pill / patch / ring','Hormonal IUD','Non-hormonal IUD','Antidepressants','Thyroid medication','Other']},
+  {id:'hNotes',cat:'Your Health',q:'Anything about your health we should know?',hint:'Things your doctor has said, how you feel day to day.',type:'ta',ph:'e.g. I was diagnosed with PCOS at 24 but my cycles have become more regular...',skip:true},
+  {id:'fit',cat:'Your Fitness',q:'What is your fitness level?',hint:'',type:'cards',single:true,skip:false,opts:[{i:'🌱',l:'Beginner',s:'New to exercise or returning after a break'},{i:'💪',l:'Intermediate',s:'Training 2-3x a week, comfortable with basics'},{i:'⚡',l:'Advanced',s:'4-5x a week, confident with weights'},{i:'🏆',l:'Athlete',s:'Competitive or sport-specific training'}],tip:{a:'Dr Stacy Sims',t:'Women are not small men. Training must be synced to your cycle — not the other way around.'}},
+  {id:'extype',cat:'Your Fitness',q:'What types of exercise do you enjoy?',hint:'Select all that apply.',type:'chips',single:false,skip:true,opts:['Weight training','HIIT','Running','Muay Thai / martial arts','CrossFit','Yoga / Pilates','Swimming','Cycling','Walking','Dance']},
+  {id:'goals',cat:'Your Fitness',q:'What are your main goals?',hint:'Select all that apply.',type:'chips',single:false,skip:false,opts:['Build muscle','Lose body fat','Improve energy','Reduce PMS','Better sleep','Improve mood','Bone health','Hormonal balance','Performance','General wellness']},
+  {id:'fNotes',cat:'Your Fitness',q:'Tell us about your training life.',hint:'Schedule, gym situation, what you love, what you avoid.',type:'ta',ph:'e.g. I train Muay Thai twice a week and CrossFit. I wake at 4am before work...',skip:true},
+  {id:'diet',cat:'Your Nutrition',q:'Any dietary preferences?',hint:'',type:'chips',single:true,skip:true,opts:['No restrictions','Vegetarian','Vegan','Pescatarian','Halal','Kosher','Gluten free','Dairy free'],tip:{a:'Dr Mary Claire Haver',t:'Anti-inflammatory nutrition is not optional in perimenopause — it is medicine.'}},
+  {id:'eating',cat:'Your Nutrition',q:'How does your eating actually work?',hint:'There are no wrong answers — real life matters more than the ideal.',type:'chips',single:false,skip:true,opts:['I eat when hungry','Around my work schedule','I forget to eat when busy','I snack throughout the day','3 regular meals','Intermittent fasting','Differently on weekends','I meal prep']},
+  {id:'cooking',cat:'Your Nutrition',q:'How would you describe your cooking?',hint:'Select all that apply.',type:'chips',single:false,skip:true,opts:['Love cooking from scratch','Want healthy but busy','Want to learn meal prep','Need quick meals after work','Cooking for family too','Avoid processed food','Use what I have in the fridge','Need dinner inspiration'],tip:{a:'Her Rhythm',t:"Tell the app what's in your fridge and it will suggest a cycle-appropriate meal you can make right now."}},
+  {id:'nNotes',cat:'Your Nutrition',q:'Tell us about your eating in your own words.',hint:'Work schedule, family situation, foods you hate — anything.',type:'ta',ph:'e.g. I work long shifts and eat twice on work days. I cook from scratch when I can but need 15-minute meals for weeknights...',skip:true},
+  {id:'supps',cat:'Supplements',q:'What supplements do you currently take?',hint:'Select all that apply.',type:'chips',single:false,skip:true,opts:['Vitamin D3','Magnesium','Omega-3','Iron','Vitamin B12','Creatine','Zinc','Vitamin C','Collagen','Probiotics','Protein powder','None currently'],tip:{a:'Dr Stacy Sims',t:'Creatine 3-5g daily is the most evidence-backed supplement for women, especially perimenopausal. Most women never take it.'}},
+  {id:'sNotes',cat:'Supplements',q:'Anything about supplements we should know?',hint:'Budget, things that have not worked, questions you want answered.',type:'ta',ph:'e.g. Magnesium upset my stomach. Want to keep things affordable. Not sure if I need iron...',skip:true},
+];
+
+function startQ(){go('questionScreen');cQ=0;renderQ();}
+
+function renderQ(){
+  const q=QS[cQ];
+  document.getElementById('qpf').style.width=(cQ/QS.length*100)+'%';
+  document.getElementById('qb').style.opacity=cQ===0?'0.3':'1';
+  document.getElementById('qb').style.pointerEvents=cQ===0?'none':'all';
+  document.getElementById('qs').style.display=q.skip?'block':'none';
+  const area=document.getElementById('qa');
+  area.classList.remove('anim');
+  void area.offsetWidth;
+  area.classList.add('anim');
+
+  let aHtml='';
+  if(q.type==='text'){
+    const sv=A[q.id]||'';
+    aHtml=`<div class="qanswers"><input class="qinput" id="qi" type="text" placeholder="${q.ph||''}" value="${sv}" oninput="A['${q.id}']=this.value"></div>`;
+  } else if(q.type==='num'){
+    const sv=A[q.id]!==undefined?A[q.id]:q.def;
+    aHtml=`<div class="qanswers"><div class="qnum"><button class="qnbtn" onclick="adjN(-1,'${q.id}',${q.min},${q.max})">−</button><div><div class="qnval" id="qnv">${sv}</div><div class="qnunit">${q.unit}</div></div><button class="qnbtn" onclick="adjN(1,'${q.id}',${q.min},${q.max})">+</button></div><div class="qalert" id="qal"></div></div>`;
+  } else if(q.type==='chips'){
+    const sv=MA[q.id]||[];
+    aHtml=`<div class="qanswers"><div class="chips">${q.opts.map(o=>`<div class="chip${sv.includes(o)?' on':''}" onclick="togChip(this,'${q.id}','${o.replace(/'/g,"\\'")}',${!!q.single})">${o}</div>`).join('')}</div></div>`;
+  } else if(q.type==='cards'){
+    const sv=A[q.id]||'';
+    aHtml=`<div class="qanswers"><div class="qcards">${q.opts.map(o=>`<div class="qcard${sv===o.l?' on':''}" onclick="selCard(this,'${q.id}','${o.l}')"><div class="ci">${o.i}</div><div class="cl">${o.l}</div><div class="cs">${o.s}</div></div>`).join('')}</div></div>`;
+  } else if(q.type==='ta'){
+    const sv=A[q.id]||'';
+    aHtml=`<div class="qanswers"><textarea class="qta" placeholder="${q.ph||''}" oninput="A['${q.id}']=this.value">${sv}</textarea></div>`;
+  }
+
+  const tip=q.tip?`<div class="qdrtip"><div class="qdra">${q.tip.a}</div><div class="qdrt">"${q.tip.t}"</div></div>`:'';
+
+  // Add Your Own — shown on chip and card questions
+  const canAddOwn = (q.type==='chips'||q.type==='cards');
+  const addOwnHtml = canAddOwn ? `<div class="add-own"><button class="add-own-btn" onclick="toggleAddOwn(this)">Add your own</button><div class="add-own-field"><input class="add-own-input" placeholder="Type anything we missed..." oninput="saveAddOwn('${q.id}',this.value)" value="${A[q.id+'_custom']||''}"></div></div>` : '';
+
+  // Profile pic — shown on name question
+  const picHtml = q.showPic ? `<div class="pic-wrap"><div class="pic-circle" onclick="document.getElementById('picInput').click()"><img id="picImg"><span class="pic-icon">&#128247;</span></div><div class="pic-hint">Add a profile photo (optional)</div><input type="file" id="picInput" accept="image/*" onchange="loadPic(this)"></div>` : '';
+
+  area.innerHTML=`${picHtml}<div class="qcat">${q.cat}</div><div class="qq">${q.q}</div>${q.hint?`<div class="qhint">${q.hint}</div>`:''} ${aHtml}${addOwnHtml}${tip}`;
+
+  if(q.id==='age'&&A.age!==undefined&&q.onV){setTimeout(()=>q.onV(A.age),80);}
+}
+
+function adjN(d,k,mn,mx){
+  const q=QS[cQ];
+  const cur=parseInt(A[k]!==undefined?A[k]:q.def);
+  const nv=Math.min(mx,Math.max(mn,cur+d));
+  A[k]=nv;
+  const el=document.getElementById('qnv');
+  if(el)el.textContent=nv;
+  if(q.onV)q.onV(nv);
+}
+
+function togChip(el,k,v,single){
+  if(!MA[k])MA[k]=[];
+  if(single){
+    document.querySelectorAll('.chip').forEach(c=>c.classList.remove('on'));
+    el.classList.add('on');
+    MA[k]=[v];A[k]=v;
+    setTimeout(()=>nextQ(),380);
+  } else {
+    el.classList.toggle('on');
+    const none=['None','None currently'];
+    if(none.includes(v)){
+      document.querySelectorAll('.chip').forEach(c=>{if(c!==el)c.classList.remove('on');});
+      MA[k]=el.classList.contains('on')?[v]:[];
+    } else {
+      document.querySelectorAll('.chip').forEach(c=>{if(none.some(n=>c.textContent.trim()===n))c.classList.remove('on');});
+      MA[k]=MA[k].filter(x=>!none.includes(x));
+      if(el.classList.contains('on')){if(!MA[k].includes(v))MA[k].push(v);}
+      else{MA[k]=MA[k].filter(x=>x!==v);}
+    }
+    A[k]=MA[k];
+  }
+}
+
+function selCard(el,k,v){
+  document.querySelectorAll('.qcard').forEach(c=>c.classList.remove('on'));
+  el.classList.add('on');A[k]=v;
+  setTimeout(()=>nextQ(),380);
+}
+
+function nextQ(){cQ<QS.length-1?(cQ++,renderQ()):showResults();}
+function prevQ(){cQ>0&&(cQ--,renderQ());}
+function skipQ(){nextQ();}
+
+// RESULTS
+function showResults(){
+  go('resultsScreen');
+  const name=A.name||'Beautiful';
+  document.getElementById('rn').textContent=name;
+  if(A.profilePic){
+    const rp=document.getElementById('rPicDisplay');
+    const ri=document.getElementById('rPicImg');
+    if(rp&&ri){ri.src=A.profilePic;rp.style.display='block';}
+  }
+
+  const rows=[];
+  if(A.age)rows.push(['Age',A.age+' years old']);
+  if(A.loc)rows.push(['Location',A.loc]);
+  if(A.reg)rows.push(['Cycle',A.reg]);
+  if(A.clen)rows.push(['Cycle length',A.clen+' days']);
+  if(A.fit)rows.push(['Fitness level',A.fit]);
+  if(A.diet)rows.push(['Diet',A.diet]);
+  const conds=(MA.cond||[]).filter(c=>c!=='None');
+  if(conds.length)rows.push(['Health conditions',conds.join(', ')]);
+  if(MA.goals?.length)rows.push(['Goals',MA.goals.slice(0,3).join(', ')]);
+  if(MA.family?.length)rows.push(['Cooking for',MA.family.join(', ')]);
+
+  document.getElementById('rp').innerHTML=`<div class="sec-label">Your profile</div>${rows.map(([k,v])=>`<div class="pitem"><div class="pkey">${k}</div><div class="pval">${v}</div></div>`).join('')}`;
+
+  const ins=[];
+  if(ageN>=35)ins.push({l:'Bone & muscle priority',t:'Dr Vonda Wright protocol: 4x4 heavy lifting, 20 jumps daily, D3 + K2 + Magnesium. Your most important decade for long-term independence.'});
+  if(conds.includes('PCOS'))ins.push({l:'PCOS support',t:'Blood sugar balancing nutrition, inositol supplementation, and modified cycle tracking for irregular cycles. Dr Natalie Crawford research applied.'});
+  if(conds.includes('Endometriosis'))ins.push({l:'Endometriosis care',t:'Anti-inflammatory meal plan, magnesium for pain, modified training during flares. Late luteal phase handled with extra care.'});
+  if((MA.goals||[]).includes('Build muscle'))ins.push({l:'Muscle building strategy',t:'Your follicular phase is your power window. Heavy lifts, PRs, progressive overload — all synced to your cycle per Dr Stacy Sims.'});
+  if((MA.family||[]).some(f=>f.includes('meat')))ins.push({l:'One meal, two ways',t:'Every meal suggestion shows you how to cook one base dish for a meat-eating family and your plant-based plate simultaneously. No double cooking.'});
+  if((MA.family||[]).some(f=>f.includes('kids')||f.includes('Picky')))ins.push({l:'Hidden veggie tricks',t:'Family meal suggestions include tips for sneaking vegetables past picky eaters — purees, sauces, finely chopped. Full nutrition, no battles.'});
+  if(!ins.length)ins.push({l:'Cycle-synced wellness',t:'Your complete plan — training, nutrition, supplements, skincare and sleep all adapted to your cycle phase every single day.'});
+
+  document.getElementById('ri').innerHTML=`<div class="sec-label" style="margin-bottom:18px">What Her Rhythm will focus on for you</div>${ins.slice(0,4).map(i=>`<div class="iitem"><div class="ilabel">${i.l}</div><div class="itext">${i.t}</div></div>`).join('')}`;
+
+  const rec=conds.length>1||ageN>=35?'Premium':A.fit==='Athlete'?'Premium':'Core';
+  const plans=[
+    {n:'Essential',p:'€4.99 / month',f:['Cycle tracking & calendar','Phase-based daily guidance','Basic workout plan','7-day free trial']},
+    {n:'Core',p:'€9.99 / month',f:['Everything in Essential','Personalised nutrition & meals','Supplement schedule','Sprint & cardio plans','Symptom tracking','AI wellness assistant','7-day free trial']},
+    {n:'Premium',p:'€14.99 / month',f:['Everything in Core','Health condition protocols','Skincare & routine builder','Expert insights library','Monthly personal consultation','7-day free trial']},
+  ];
+
+  document.getElementById('rpl').innerHTML=`<div class="plan-hl">Choose your plan</div>${plans.map(p=>`<div class="plancard${p.n===rec?' rec':''}">${p.n===rec?'<div class="pbadge">Recommended</div>':''}<div class="pname">${p.n}</div><div class="pprice">${p.p}</div><ul class="pfeat">${p.f.map(f=>`<li>${f}</li>`).join('')}</ul></div>`).join('')}`;
+}
+
+function toggleAddOwn(btn){
+  const field=btn.nextElementSibling;
+  const open=field.style.display==='block';
+  field.style.display=open?'none':'block';
+  btn.textContent=open?'Add your own':'Close';
+  if(!open)field.querySelector('input').focus();
+}
+
+function saveAddOwn(key,val){
+  A[key+'_custom']=val;
+}
+
+function loadPic(input){
+  const file=input.files[0];
+  if(!file)return;
+  const reader=new FileReader();
+  reader.onload=e=>{
+    const img=document.getElementById('picImg');
+    if(!img)return;
+    img.src=e.target.result;
+    img.style.display='block';
+    img.parentElement.querySelector('.pic-icon').style.display='none';
+    A.profilePic=e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+function beginTrial(){alert('Welcome to Her Rhythm, '+(A.name||'beautiful')+'! Your 7-day free trial is starting.');}
+
+window.addEventListener('DOMContentLoaded',()=>{
+  const sv=localStorage.getItem('hrL');
+  if(sv)lang=sv;
+  detectLang();
+});
+</script>
+</body>
+</html>
