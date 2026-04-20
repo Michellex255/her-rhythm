@@ -267,8 +267,23 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;background:var(--dark);co
     <div class="gold-bar" style="margin:8px auto 32px"></div>
     <div id="ri"></div>
     <div id="rpl"></div>
-    <button class="btn-trial" onclick="beginTrial()">Start My Free 7-Day Trial</button>
-    <p style="font-size:11px;color:var(--lo);text-align:center">No credit card required. Cancel anytime.</p>
+    <div id="trialForm">
+      <div style="margin-bottom:16px">
+        <div style="font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);text-align:center;margin-bottom:12px">One last step</div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:300;color:var(--hi);text-align:center;margin-bottom:20px;font-style:italic">Where shall we send your access?</div>
+        <div style="display:flex;border:1px solid rgba(255,255,255,0.1);border-radius:100px;overflow:hidden;background:rgba(255,255,255,0.03);backdrop-filter:blur(12px)">
+          <input id="trialEmail" type="email" placeholder="Your email address" style="flex:1;background:transparent;border:none;padding:16px 22px;font-family:'DM Sans',sans-serif;font-size:14px;color:var(--hi);outline:none;caret-color:var(--rose)" aria-label="Email address">
+          <button onclick="beginTrial()" style="padding:11px 22px;background:var(--rose);border:none;border-radius:100px;color:#fff;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;cursor:pointer;margin:4px;white-space:nowrap;transition:all 0.4s" id="trialBtn">Start my trial</button>
+        </div>
+        <p style="font-size:11px;color:var(--lo);text-align:center;margin-top:10px">No credit card required. Cancel anytime.</p>
+      </div>
+    </div>
+    <div id="trialSuccess" style="display:none;text-align:center;padding:20px 0">
+      <div style="font-size:44px;margin-bottom:14px">🌸</div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:36px;font-weight:300;font-style:italic;color:var(--hi);margin-bottom:8px">Welcome to Her Rhythm.</div>
+      <p style="font-size:14px;color:var(--mid);line-height:1.8;font-weight:300">Check your inbox — your access link is on its way.<br>Your 7-day free trial starts now.</p>
+      <button onclick="window.location.href='app.html'" style="margin-top:24px;padding:16px 40px;background:var(--rose);border:none;border-radius:100px;color:#fff;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;cursor:pointer;box-shadow:0 4px 20px rgba(200,82,106,0.25)">Open Her Rhythm app →</button>
+    </div>
     <p class="legal">Her Rhythm provides wellness guidance based on published expert research. It is not a substitute for medical advice. Always consult your healthcare provider before making changes to medications or supplements.</p>
   </div>
 </div>
@@ -528,7 +543,58 @@ function loadPic(input){
   reader.readAsDataURL(file);
 }
 
-function beginTrial(){alert('Welcome to Her Rhythm, '+(A.name||'beautiful')+'! Your 7-day free trial is starting.');}
+async function beginTrial(){
+  const email=document.getElementById('trialEmail').value.trim();
+  if(!email||!email.includes('@')){
+    document.getElementById('trialEmail').style.borderBottom='1px solid rgba(200,82,106,0.5)';
+    document.getElementById('trialEmail').placeholder='Please enter a valid email';
+    return;
+  }
+  const btn=document.getElementById('trialBtn');
+  btn.textContent='Starting...';
+  btn.style.opacity='0.7';
+
+  // Build full profile from answers
+  const profile = {
+    name: A.name || '',
+    email,
+    age: A.age || '',
+    location: A.loc || '',
+    cycle: A.reg || '',
+    cycleLength: A.clen || '',
+    fitness: A.fit || '',
+    diet: A.diet || '',
+    goals: (MA.goals||[]).join(', '),
+    conditions: (MA.cond||[]).join(', '),
+    symptoms: (MA.symp||[]).join(', '),
+    exercise: (MA.extype||[]).join(', '),
+    family: (MA.family||[]).join(', '),
+    eating: (MA.eating||[]).join(', '),
+    cooking: (MA.cooking||[]).join(', '),
+    supplements: (MA.supps||[]).join(', '),
+    notes: [A.cyNotes, A.hNotes, A.fNotes, A.nNotes, A.sNotes].filter(Boolean).join(' | '),
+    source: 'Her Rhythm Trial Signup',
+    date: new Date().toISOString()
+  };
+
+  try {
+    const res = await fetch('https://formspree.io/f/maqabrkq', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify(profile)
+    });
+    if(res.ok){
+      document.getElementById('trialForm').style.display='none';
+      document.getElementById('trialSuccess').style.display='block';
+    } else {
+      btn.textContent='Try again';
+      btn.style.opacity='1';
+    }
+  } catch(e){
+    btn.textContent='Try again';
+    btn.style.opacity='1';
+  }
+}
 
 window.addEventListener('DOMContentLoaded',()=>{
   const sv=localStorage.getItem('hrL');

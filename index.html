@@ -542,20 +542,34 @@ function scrollToWaitlist(){
   setTimeout(()=>document.getElementById('wEmail').focus(),700);
 }
 
-function joinWaitlist(){
+async function joinWaitlist(){
   const email=document.getElementById('wEmail').value.trim();
   if(!email||!email.includes('@')){
     document.getElementById('wEmail').style.color='rgba(200,82,106,0.9)';
     document.getElementById('wEmail').placeholder='Please enter a valid email address';
     return;
   }
-  // Save locally — will connect to Supabase when backend is ready
-  const list=JSON.parse(localStorage.getItem('hrWaitlist')||'[]');
-  list.push({email,date:new Date().toISOString(),source:'landing'});
-  localStorage.setItem('hrWaitlist',JSON.stringify(list));
-  document.getElementById('wForm').style.display='none';
-  document.getElementById('wSuccess').style.display='block';
-  speakAuto('You are on the list! We will email you as soon as Her Rhythm launches. Welcome to the family.');
+  const btn=document.querySelector('.w-btn');
+  btn.textContent='Sending...';
+  btn.style.opacity='0.7';
+  try {
+    const res = await fetch('https://formspree.io/f/mnjlzera', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({ email, source: 'Her Rhythm Waitlist', date: new Date().toISOString() })
+    });
+    if(res.ok) {
+      document.getElementById('wForm').style.display='none';
+      document.getElementById('wSuccess').style.display='block';
+      speakAuto('You are on the list! We will email you as soon as Her Rhythm launches. Welcome to the family.');
+    } else {
+      btn.textContent='Try again';
+      btn.style.opacity='1';
+    }
+  } catch(e) {
+    btn.textContent='Try again';
+    btn.style.opacity='1';
+  }
 }
 
 function shareWA(){window.open('https://wa.me/?text=I just joined the Her Rhythm waitlist — the first wellness app built entirely around your cycle. '+window.location.href);}
